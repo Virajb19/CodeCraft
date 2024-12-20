@@ -26,6 +26,31 @@ model User {
   OauthProvider OauthProvider?
   OauthId String?
 
+  snippets Snippet[]
+  codeExecutions CodeExecution[]
+}
+
+model Snippet {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  title String
+  language String
+  code String
+
+  userId Int
+  user User @relation(fields: [userId],references: [id])
+}
+
+model CodeExecution {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  language String
+  code String
+  output String?
+  error String?
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 }
 
 

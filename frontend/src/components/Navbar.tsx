@@ -2,8 +2,12 @@ import { Blocks, Code2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger } from './ui/select';
 import { SelectValue } from '@radix-ui/react-select';
 import { ThemeToggle } from './theme-toggler';
+import { useLangStore } from '@/lib/store';
 
 export default function Navbar() {
+
+   const { setSelectedLang } = useLangStore()
+
   return <nav className="fixed inset-x-3 top-2 flex gap-3 items-center justify-between rounded-md backdrop-blur-md z-40 p-6 bg-[#0a0a0f]/80 border-b border-gray-600">
        <div className='flex gap-3 items-center group'>
           <span>
@@ -36,12 +40,12 @@ export default function Navbar() {
               </span>
             </div>
           </div>
-          <Select>
+          <Select onValueChange={val => setSelectedLang(val)}>
                   <SelectTrigger className='w-[300px] outline-none'>
                       <SelectValue placeholder='Select a language'/>
                   </SelectTrigger>
                   <SelectContent>
-                  {["JavaScript", "Python", "Java", "C++", "C#", "Ruby", "PHP", "Swift", "Kotlin", "Go", "Rust", "TypeScript"].map(lang => {
+                  {["JavaScript", "Python", "Java", "Cpp", "Csharp", "Ruby", "PHP", "Swift", "Kotlin", "Go", "Rust", "TypeScript"].map(lang => {
                      return <SelectItem key={lang} value={lang} className='font-semibold'>
                          {lang}
                      </SelectItem>
