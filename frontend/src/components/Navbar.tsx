@@ -1,8 +1,8 @@
 import { Blocks, Code2 } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger } from './ui/select';
-import { SelectValue } from '@radix-ui/react-select';
+import { Select, SelectContent, SelectValue, SelectItem, SelectTrigger } from './ui/select';
 import { ThemeToggle } from './theme-toggler';
 import { useLangStore } from '@/lib/store';
+import ThemeSelector from './ThemeSelector';
 
 export default function Navbar() {
 
@@ -52,6 +52,7 @@ export default function Navbar() {
                   })}
                   </SelectContent>
                </Select>
+            <ThemeSelector />
           <ThemeToggle />
   </nav>
 }

@@ -21,9 +21,9 @@ export default function EditorPanel() {
     if (editor) editor.setValue(newCode);
   }, [lang,editor])
 
-  return <div className="border-2 w-[60%] p-1">
+  return <div className="w-[55%] p-1">
         <div className="flex items-center justify-between">
-           <div className="flex gap-2 border">
+           <div className="flex gap-2">
              <img src={`/${lang}.png`} width={30} height={30} className="rounded-sm"/>
              <div className="flex flex-col">
                 <h2 className="text-sm font-medium text-white">Code Editor</h2>
@@ -31,7 +31,7 @@ export default function EditorPanel() {
              </div>
            </div>
 
-           <div className="flex items-center gap-3 border">
+           <div className="flex items-center gap-3">
                 <div className="flex items-center gap-3 px-3 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
                     <TypeIcon className="size-4 text-gray-400" />
                     <input onChange={e => setFontSize(parseInt(e.target.value))} className="w-20 h-1 bg-gray-600 rounded-lg cursor-pointer" type="range" min={12} max={24} value={fontSize} />

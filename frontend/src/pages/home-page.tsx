@@ -1,4 +1,5 @@
 import EditorPanel from "@/components/editor-panel";
+import OutputPanel from "@/components/OutputPanel";
 
 export default function HomePage() {
 
@@ -6,8 +7,9 @@ export default function HomePage() {
       {/* <button onClick={async () => {
         window.open('/api/auth/callback/github')
       }} className="rounded-sm p-3 bg-red-900">Sign up</button> */}
-      <div className="mt-24 border-4 w-full p-3 flex gap-2">
+      <div className="mt-24 w-full p-3 flex items-center gap-2">
          <EditorPanel />
+         <OutputPanel />
       </div>
   </div>
 } 
