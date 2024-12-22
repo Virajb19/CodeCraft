@@ -1,12 +1,14 @@
 import { Blocks, Code2 } from 'lucide-react';
 import { Select, SelectContent, SelectValue, SelectItem, SelectTrigger } from './ui/select';
 import { ThemeToggle } from './theme-toggler';
-import { useLangStore } from '@/lib/store';
+import { useCodeEditorStore } from '@/lib/store';
 import ThemeSelector from './ThemeSelector';
+import RunButton from './run-button';
 
 export default function Navbar() {
 
-   const { setSelectedLang } = useLangStore()
+  //  const { setSelectedLang } = useLangStore()
+  const { setLanguage } = useCodeEditorStore()
 
   return <nav className="fixed inset-x-3 top-2 flex gap-3 items-center justify-between rounded-md backdrop-blur-md z-40 p-6 bg-[#0a0a0f]/80 border-b border-gray-600">
        <div className='flex gap-3 items-center group'>
@@ -40,12 +42,12 @@ export default function Navbar() {
               </span>
             </div>
           </div>
-          <Select onValueChange={val => setSelectedLang(val)}>
+          <Select onValueChange={val => setLanguage(val)}>
                   <SelectTrigger className='w-[300px] outline-none'>
                       <SelectValue placeholder='Select a language'/>
                   </SelectTrigger>
                   <SelectContent>
-                  {["JavaScript", "Python", "Java", "Cpp", "Csharp", "Ruby", "PHP", "Swift", "Kotlin", "Go", "Rust", "TypeScript"].map(lang => {
+                  {["JavaScript", "Python", "Java", "Cpp", "Csharp", "Ruby", "Swift", "Go", "Rust", "TypeScript"].map(lang => {
                      return <SelectItem key={lang} value={lang} className='font-semibold'>
                          {lang}
                      </SelectItem>
@@ -53,6 +55,7 @@ export default function Navbar() {
                   </SelectContent>
                </Select>
             <ThemeSelector />
+            <RunButton />
           <ThemeToggle />
   </nav>
 }

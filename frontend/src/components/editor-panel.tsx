@@ -2,11 +2,14 @@ import { useCodeEditorStore, useLangStore } from "@/lib/store"
 import { Editor } from "@monaco-editor/react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../constants";
 import { RotateCcwIcon, ShareIcon, TypeIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function EditorPanel() {
 
-  let { selectedLang: lang } = useLangStore()
+  // let { selectedLang: lang } = useLangStore()
+  // lang = lang.toLowerCase()
+
+  let { language: lang } = useCodeEditorStore()
   lang = lang.toLowerCase()
 
   const {setFontSize, setEditor, theme, fontSize, editor } = useCodeEditorStore()
@@ -20,6 +23,14 @@ export default function EditorPanel() {
     const newCode = savedCode || LANGUAGE_CONFIG[lang].defaultCode;
     if (editor) editor.setValue(newCode);
   }, [lang,editor])
+
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+   setIsMounted(true)
+  }, [])
+
+  if(!isMounted) return null
 
   return <div className="w-[55%] p-1">
         <div className="flex items-center justify-between">

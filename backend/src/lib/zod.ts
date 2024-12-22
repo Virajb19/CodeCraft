@@ -12,3 +12,10 @@ export const SignInSchema = z.object({
     password: z.string().min(8, {message: 'Password must be atleast 8 letters long'}).max(15, { message: 'Password cannot exceed 15 characters'})
               .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/, {message: 'Password must contain atleast one special char and one number'}).trim()
 })
+
+export const createCodeExecutionSchema = z.object({
+    language: z.string(),
+    code: z.string(),
+    output: z.string(),
+    error: z.string().nullable()
+})

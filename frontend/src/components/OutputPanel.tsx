@@ -9,7 +9,7 @@ import { Skeleton } from './ui/skeleton';
 
 export default function OutputPanel() {
 
-const { error,output, isRunning} = useCodeEditorStore()
+const { error, output, isRunning} = useCodeEditorStore()
 
 const [copiedText, copy] = useCopyToClipboard()
 const [isCopied, setIsCopied] = useState(false)
@@ -24,6 +24,9 @@ const handleCopy = async () => {
    else toast.error('Failed to copy!!')
    setTimeout(() => setIsCopied(false), 2000)               
 }
+
+// if(output) return
+// if(error) return
 
   return <div className="bg-[#181825] grow rounded-xl p-4 ring-1 ring-gray-800/50">
             <div className="flex items-center justify-between mb-3">
@@ -55,7 +58,7 @@ const handleCopy = async () => {
         <div className='h-[calc(90vh-9rem)] w-[42vw] overflow-scroll bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] text-sm rounded-xl p-2'>
              {/* <div className='w-[100vw] h-[100vh] border overflow-hidden'>hello</div> */}
              {isRunning ? (
-                <div className='flex flex-col gap-5 border'>
+                <div className='flex flex-col gap-5'>
                   {Array.from({length: 7}).map((_,i) => {
                      return <div key={i} className='flex flex-col gap-2'>
                         {Array.from({length: 3}).map((_,i) => {

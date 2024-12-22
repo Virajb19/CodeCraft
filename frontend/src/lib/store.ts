@@ -8,7 +8,7 @@ type selectedLang = {
     setSelectedLang: (lang: string) => void 
 }
 
-type ExecutionResult =  {
+export type ExecutionResult =  {
     code: string;
     output: string;
     error: string | null;
@@ -29,6 +29,7 @@ type CodeEditorState = {
     setCode: () => void;
     setTheme: (theme: string) => void;
     setFontSize: (fontSize: number) => void;
+    setLanguage: (language: string) => void
     runCode: () => Promise<void>;
   }
 
@@ -46,7 +47,7 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => ({
     error: null,
     executionResult: null,
     output: "",
-    language: useLangStore.getState().selectedLang,
+    language: localStorage.getItem('lang') || '', // This is initial value this value is given once on initial render or mount 
     theme: localStorage.getItem('editor-theme') || 'vs-dark',
     fontSize: Number(localStorage.getItem('font-size') || '16'),
     setEditor: (editor: editor.IStandaloneCodeEditor) => {
@@ -71,10 +72,14 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => ({
         localStorage.setItem('editor-theme', theme)
         set({ theme })
     },
+    setLanguage: (language: string) => {
+      localStorage.setItem('lang', language)
+      set({ language })
+    },
     runCode: async () => {
         const { language, getCode } = get()
         const code = getCode()
-
+        // alert(language)
         if (!code) {
             set({ error: "Please enter some code" })
             return;
@@ -82,16 +87,18 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => ({
     
       set({ isRunning: true, error: null, output: "" })
 
-      try {
-          const runtime = LANGUAGE_CONFIG[language].pistonRuntime
-          const { data } = await axios.post('https://emkc.org/api/v2/piston/execute', 
-            JSON.stringify({
-                language: runtime.language,
-                version: runtime.version,
-                files: [{ content: code }]
-            })
-          )
+      // await new Promise(r => setTimeout(r, 2000))
 
+      try {
+          const runtime = LANGUAGE_CONFIG[language.toLowerCase()].pistonRuntime
+          const { data } = await axios.post('https://emkc.org/api/v2/piston/execute', 
+            {
+              language: runtime.language,
+              version: runtime.version,
+              files: [{ content: code }]
+            }
+          )
+          
           if (data.message) {
             set({ error: data.message, executionResult: { code, output: "", error: data.message } })
             return
@@ -99,44 +106,22 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => ({
 
           if (data.compile && data.compile.code !== 0) {
             const error = data.compile.stderr || data.compile.output
-            set({
-              error,
-              executionResult: {
-                code,
-                output: "",
-                error,
-              },
-            })
+            set({ error, executionResult: { code, output: "", error } })
             return
           }
 
           if (data.run && data.run.code !== 0) {
             const error = data.run.stderr || data.run.output
-            set({
-              error,
-              executionResult: {
-                code,
-                output: "",
-                error,
-              },
-            })
+            set({ error, executionResult: { code, output: "", error } })
             return
           }
   
           const output = data.run.output;
 
-          set({
-            output: output.trim(),
-            error: null,
-            executionResult: {
-              code,
-              output: output.trim(),
-              error: null,
-            },
-          })
-  
+          set({ output: output.trim(), error: null, executionResult: { code, output: output.trim(), error: null } })
   
       } catch(err) {
+        console.error(err)
         set({
             error: "Error running code",
             executionResult: { code, output: "", error: "Error running code" },

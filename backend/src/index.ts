@@ -8,6 +8,7 @@ import { isAuthenticated } from './middleware/auth.middleware';
 import { authRouter } from './routes/auth.routes';
 import GitHubStrategy from 'passport-github';
 import db from './lib/db'
+import { executionRouter } from './routes/code-execution.routes';
 
 dotenv.config();
 
@@ -15,12 +16,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: 'http://localhost:3001',
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }))
 app.use(express.json())
-
 
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID || '',
@@ -63,6 +63,7 @@ app.use(passport.session());
 
 app.use('/api/auth/', authRouter)
 app.use('/api/user/', userRouter)
+app.use('/api/codeExecution', executionRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
