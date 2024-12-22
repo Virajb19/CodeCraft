@@ -19,3 +19,9 @@ export const createCodeExecutionSchema = z.object({
     output: z.string(),
     error: z.string().nullable()
 })
+
+export const createSnippetSchema = z.object({
+    title: z.string().min(1),
+    language: z.string(),
+    code: z.string()
+})

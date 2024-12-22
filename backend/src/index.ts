@@ -9,6 +9,7 @@ import { authRouter } from './routes/auth.routes';
 import GitHubStrategy from 'passport-github';
 import db from './lib/db'
 import { executionRouter } from './routes/code-execution.routes';
+import { snippetRouter } from './routes/snippet.routes';
 
 dotenv.config();
 
@@ -64,6 +65,7 @@ app.use(passport.session());
 app.use('/api/auth/', authRouter)
 app.use('/api/user/', userRouter)
 app.use('/api/codeExecution', executionRouter)
+app.use('/api/snippet', snippetRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);

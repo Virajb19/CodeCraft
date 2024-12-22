@@ -6,6 +6,10 @@
   @apply flex justify-center items-center
 }
 
+.input-style {
+  @apply outline-none px-4 py-2 bg-transparent placeholder:text-sm rounded-xl border focus:ring-2 focus:ring-blue-600 focus:border-transparent duration-200
+}
+
 @font-face {
   font-family: sans;
   src: url(/DMSans_24pt-Bold.ttf);

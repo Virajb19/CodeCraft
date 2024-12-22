@@ -1,8 +1,9 @@
 import { useCodeEditorStore, useLangStore } from "@/lib/store"
 import { Editor } from "@monaco-editor/react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../constants";
-import { RotateCcwIcon, ShareIcon, TypeIcon } from "lucide-react";
+import { RotateCcwIcon, TypeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import SaveButton from "./SaveButton";
 
 export default function EditorPanel() {
 
@@ -32,8 +33,8 @@ export default function EditorPanel() {
 
   if(!isMounted) return null
 
-  return <div className="w-[55%] p-1">
-        <div className="flex items-center justify-between">
+  return <div className="w-[55%] p-1.5 bg-[#12121a]/90 rounded-xl border border-white/[0.05] backdrop-blur-sm">
+        <div className="flex items-center justify-between ml-3">
            <div className="flex gap-2">
              <img src={`/${lang}.png`} width={30} height={30} className="rounded-sm"/>
              <div className="flex flex-col">
@@ -42,10 +43,10 @@ export default function EditorPanel() {
              </div>
            </div>
 
-           <div className="flex items-center gap-3">
+           <div className="flex items-center gap-3 mr-2">
                 <div className="flex items-center gap-3 px-3 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
                     <TypeIcon className="size-4 text-gray-400" />
-                    <input onChange={e => setFontSize(parseInt(e.target.value))} className="w-20 h-1 bg-gray-600 rounded-lg cursor-pointer" type="range" min={12} max={24} value={fontSize} />
+                    <input onChange={e => setFontSize(parseInt(e.target.value))} className="w-20 h-1 bg-gray-600 text-blue-700 rounded-lg cursor-pointer" type="range" min={12} max={24} value={fontSize} />
                     <span className="text-sm font-medium text-gray-400 min-w-[2rem] text-center">
                       {fontSize}
                     </span>
@@ -56,6 +57,9 @@ export default function EditorPanel() {
                    className="p-2 bg-[#1e1e2e] hover:bg-[#2a2a3a] rounded-lg ring-1 ring-white/5 transition-colors group">
                    <RotateCcwIcon className="size-4 text-gray-400" />
                  </button>
+
+                <SaveButton />
+
             </div>
       </div>
       <div className="rounded-xl overflow-hidden ring-1 ring-white/[0.05] mt-2">
