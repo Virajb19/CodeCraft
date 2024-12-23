@@ -23,10 +23,10 @@ export default function SaveButton() {
         defaultValues: { title: ''}
     })
 
-    const {mutate: createSnippet, isPending} = useMutation({
+    const {mutateAsync: createSnippet} = useMutation({
      mutationFn: async (data: { title: string, language: string, code: string}) => {
           const res = await axios.post('/api/snippet/create', data) 
-          await new Promise(r => setTimeout(r, 5000))
+          // await new Promise(r => setTimeout(r, 5000))
           setOpen(false)
           return res.data
      },
@@ -41,9 +41,7 @@ export default function SaveButton() {
 
   async function onSubmit(data: Input) {
      const code = getCode()
-     await new Promise(r => setTimeout(r, 5000))
-     // mutateAsync
-     createSnippet({title: data.title, language, code})
+     await createSnippet({title: data.title, language, code})
   }
 
   return <Dialog open={open} onOpenChange={setOpen}>
@@ -75,9 +73,9 @@ export default function SaveButton() {
 
                          <div className="flex items-center justify-end gap-3">
                           <button onClick={() => setOpen(false)} type="button" className="py-2 px-5 rounded-md bg-red-600 opacity-80 hover:opacity-100 duration-200">Cancel</button>
-                          <button disabled={isPending || form.formState.isSubmitting} type="submit" className="flex items-center gap-2 py-2 px-5 rounded-md bg-gradient-to-l from-blue-500 to-blue-600 disabled:cursor-not-allowed disabled:opacity-70">
-                              {(isPending || form.formState.isSubmitting) && <Loader className="animate-spin"/>}
-                              {(isPending || form.formState.isSubmitting) ? 'Saving...' : 'Save'}
+                          <button disabled={form.formState.isSubmitting} type="submit" className="flex items-center gap-2 py-2 px-5 rounded-md bg-gradient-to-l from-blue-500 to-blue-600 disabled:cursor-not-allowed disabled:opacity-70">
+                              {form.formState.isSubmitting && <Loader className="animate-spin"/>}
+                              {form.formState.isSubmitting ? 'Saving...' : 'Save'}
                            </button>
                          </div>
 

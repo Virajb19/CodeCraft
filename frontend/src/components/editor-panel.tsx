@@ -1,4 +1,4 @@
-import { useCodeEditorStore, useLangStore } from "@/lib/store"
+import { useCodeEditorStore } from "@/lib/store"
 import { Editor } from "@monaco-editor/react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../constants";
 import { RotateCcwIcon, TypeIcon } from "lucide-react";
@@ -6,9 +6,6 @@ import { useEffect, useState } from "react";
 import SaveButton from "./SaveButton";
 
 export default function EditorPanel() {
-
-  // let { selectedLang: lang } = useLangStore()
-  // lang = lang.toLowerCase()
 
   let { language: lang } = useCodeEditorStore()
   lang = lang.toLowerCase()

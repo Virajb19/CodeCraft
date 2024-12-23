@@ -19,3 +19,41 @@ export async function createSnippet(req: Request, res: Response) {
          res.status(500).json({msg: 'Internal server error'})
      }
 }
+
+export async function getSnippets(req: Request, res: Response) {
+    try {
+         const snippets = await db.snippet.findMany({ where: { userId: 1}, orderBy: { createdAt: 'desc'}})
+         res.status(200).json({snippets})
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+    }
+}
+
+export async function getSnippet(req: Request, res: Response) {
+    try {
+
+        const { id } = req.params
+        const snippet = await db.snippet.findUnique({ where: {id}})
+
+        res.status(200).json({snippet})
+
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+    }
+}
+
+export async function deleteSnippet(req: Request, res: Response) {
+    try {
+
+        const { id } = req.params
+        await db.snippet.delete({ where: {id}})
+
+        res.status(204).json({msg: 'Deleted snippet successfully'})
+
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+    }
+}

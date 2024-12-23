@@ -4,6 +4,8 @@ import './index.css'
 import HomePage from './pages/home-page'
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'sonner'
+import SnippetsPage from './pages/snippets-page';
+import Snippet from './pages/Snippet';
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
           <Routes>
               <Route path='/' element={<HomePage />} />
+              <Route path='/snippets' element={<SnippetsPage />}/>
+              <Route path='/snippet/:id' element={<Snippet />}/>
           </Routes>
       </div>
   )
