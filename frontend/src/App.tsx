@@ -1,23 +1,28 @@
-import { Route, Routes } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import './index.css'
-import HomePage from './pages/home-page'
+import { Route, Routes, Navigate } from 'react-router-dom'
+import EditorPage from './pages/editor-page'
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'sonner'
 import SnippetsPage from './pages/snippets-page';
 import Snippet from './pages/Snippet';
+import HomePage from './pages/HomePage';
+import './index.css'
+import { useAuth } from './lib/useAuth';
 
 function App() {
 
+    const { user } = useAuth()
+    const isAuth = !!user
+
   return (
       <div className='w-full min-h-screen'>
-          <Navbar />
           <Toaster richColors position='bottom-right' theme='dark'/>
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
+
           <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/snippets' element={<SnippetsPage />}/>
-              <Route path='/snippet/:id' element={<Snippet />}/>
+              <Route path='/' element={<HomePage />}/>
+              <Route path='/editor' element={isAuth ? <EditorPage /> : <Navigate to={'/'}/>} />
+              <Route path='/snippets' element={isAuth ? <SnippetsPage /> : <Navigate to={'/'}/>}/>
+              <Route path='/snippet/:id' element={isAuth ? <Snippet /> : <Navigate to={'/'}/>}/>
           </Routes>
       </div>
   )

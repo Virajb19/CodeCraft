@@ -12,7 +12,7 @@ export default function RunButton() {
 
   const { mutate: createCodeExecution} = useMutation({
     mutationFn: async (data: ExecutionResult & { language: string}) => {
-       const { data: { id } } = await axios.post('/api/codeExecution/create', data)
+       const { data: { id } } = await axios.post('/api/codeExecution/create', data, { withCredentials: true})
        return id
     },
     onError: (err) => {

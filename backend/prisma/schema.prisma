@@ -38,7 +38,7 @@ model Snippet {
   code String
 
   userId Int
-  user User @relation(fields: [userId],references: [id])
+  user User @relation(fields: [userId],references: [id], onDelete: Cascade)
 }
 
 model CodeExecution {
@@ -50,7 +50,7 @@ model CodeExecution {
   error String?
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 

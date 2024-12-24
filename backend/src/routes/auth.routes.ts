@@ -1,11 +1,29 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import passport from "passport";
 
 export const authRouter = Router()
 
-authRouter.get('/github', passport.authenticate('github'))
+authRouter.get('/github', passport.authenticate('github', {scope: ["user:email"]}))
 
-authRouter.get('/callback/github', passport.authenticate('github', { failureRedirect: '/'}, (req: Request, res: Response) => res.redirect('/')))
+authRouter.get('/callback/github', (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate('github', { failureRedirect: process.env.CLIENT_BASE_URL }, (err: Error, user: Express.User, info: any) => {
+        if (err) {
+            console.error(err);
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect(process.env.CLIENT_BASE_URL as string); // Redirect on failure
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                console.error(err);
+                return next(err);
+            }
+            return res.redirect(process.env.CLIENT_BASE_URL as string + '/editor'); // Redirect on success
+        });
+    })(req, res, next);
+});
+
 
 authRouter.get('/check',(req: Request, res: Response) => {
     if (req.isAuthenticated()) {

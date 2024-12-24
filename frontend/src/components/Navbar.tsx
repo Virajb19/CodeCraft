@@ -4,15 +4,12 @@ import { ThemeToggle } from './theme-toggler';
 import { useCodeEditorStore } from '@/lib/store';
 import ThemeSelector from './ThemeSelector';
 import RunButton from './run-button';
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import UserAccountNav from './UserAccountNav';
 
 export default function Navbar() {
 
   const { setLanguage } = useCodeEditorStore()
-
-  const { pathname } = useLocation()
-
-  if(pathname === '/snippets') return null
 
   return <nav className="fixed inset-x-0 top-0 flex gap-3 items-center justify-between backdrop-blur-md z-40 p-4 bg-[#0a0a0f]/80 border-b border-gray-600">
        <div className='flex gap-3 items-center group'>
@@ -60,6 +57,6 @@ export default function Navbar() {
                </Select>
             <ThemeSelector />
             <RunButton />
-          <ThemeToggle />
+            <UserAccountNav />
   </nav>
 }

@@ -15,7 +15,7 @@ export default function Snippet() {
 
     const { id } = useParams()
     const navigate = useNavigate()
-    const {data: snippet} = useQuery<Snippet>({
+    const {data: snippet} = useQuery<Snippet | null>({
       queryKey: ['getSnippet', id],
       queryFn: async () => {
          try {
@@ -28,7 +28,7 @@ export default function Snippet() {
       }
     })
 
-    if(!snippet) navigate('/snippets')
+    if(!snippet) navigate('/editor')
 
 
   return <div className="w-full min-h-screen flex-center">

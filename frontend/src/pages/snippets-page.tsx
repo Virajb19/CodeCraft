@@ -26,7 +26,7 @@ export default function SnippetsPage() {
         queryKey: ['getSnippets'],
         queryFn: async () => {
             try {
-                const { data: { snippets }} = await axios.get('/api/snippet/getSnippets')
+                const { data: { snippets }} = await axios.get('/api/snippet/getSnippets', { withCredentials: true})
                 return snippets
             } catch(err) {
                  console.error(err)
