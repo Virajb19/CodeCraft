@@ -28,6 +28,7 @@ model User {
 
   snippets Snippet[]
   codeExecutions CodeExecution[]
+  stars Star[]
 }
 
 model Snippet {
@@ -39,6 +40,8 @@ model Snippet {
 
   userId Int
   user User @relation(fields: [userId],references: [id], onDelete: Cascade)
+
+  stars Star[]
 }
 
 model CodeExecution {
@@ -51,6 +54,20 @@ model CodeExecution {
 
   userId Int
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Star {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+
+
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  snippetId  String
+  snippet    Snippet  @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+
+  @@unique([userId,snippetId])
 }
 
 

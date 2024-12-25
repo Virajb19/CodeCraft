@@ -15,7 +15,7 @@ export default function Snippet() {
 
     const { id } = useParams()
     const navigate = useNavigate()
-    const {data: snippet} = useQuery<Snippet | null>({
+    const {data: snippet} = useQuery<Snippet>({
       queryKey: ['getSnippet', id],
       queryFn: async () => {
          try {

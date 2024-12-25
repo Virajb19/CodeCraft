@@ -67,13 +67,52 @@ export async function deleteSnippet(req: Request, res: Response) {
           return
         } 
 
-        // compare Ids
-
         const { id } = req.params
+
+        const snippet = await db.snippet.findUnique({where: {id}})
+        if(!snippet) {
+            res.status(404).json({msg: 'Snippet not found'})
+            return
+        }
+
+        if(snippet.userId !== userId) {
+            res.status(403).json({msg: 'You are not authorized to delete this snippet!!'})
+            return
+        }
+
         await db.snippet.delete({ where: {id}})
 
         res.status(204).json({msg: 'Deleted snippet successfully'})
 
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+    }
+}
+
+export async function starSnippet(req: Request, res: Response) {
+    try {
+
+        const userId = req.user?.id
+        if(!userId) {
+          res.status(401).json({msg: 'Not authorized'})
+          return
+        } 
+
+        const { id } = req.params
+
+        const existingStar = await db.star.findFirst({where: {snippetId: id, userId}})
+
+        if(existingStar) {
+           await db.star.delete({where: {id: existingStar.id}})
+           const starCount = await db.star.count({where: {snippetId: id}})
+           res.status(203).json({ isStarred: false, starCount})
+           return
+        } 
+
+        await db.star.create({data: {userId, snippetId: id}})
+        const starCount = await db.star.count({where: {snippetId: id}})
+        res.status(201).json({ isStarred: true, starCount})
     } catch(err) {
         console.error(err)
         res.status(500).json({msg: 'Internal server error'})

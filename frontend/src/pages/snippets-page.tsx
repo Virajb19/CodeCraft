@@ -96,7 +96,7 @@ export default function SnippetsPage() {
 
                  </div>
              </section>
-             <motion.div layout id="snippets" className="border-4 grid grid-cols-3 gap-4 p-2 w-3/4">
+             <motion.div layout id="snippets" className="grid grid-cols-3 gap-4 p-2 w-3/4">
               <AnimatePresence mode="popLayout">
                 {filteredSnippets?.map(snippet => {
                     return <SnippetCard key={snippet.id}  snippet={snippet}/>
