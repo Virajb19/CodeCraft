@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 
 export default function StarButton({snippetId} : {snippetId: string}) {
 
-  // USE LOCAL STORAGE OR SEE CONVEX/SNIPPETS.TS
+  // USE LOCAL STORAGE OR SEE CONVEX/SNIPPETS.TS fire a query
   const [isStarred, setIsStarred] = useState(false)
   const [starCount, setStarCount] = useState(0)
 
@@ -15,7 +15,7 @@ export default function StarButton({snippetId} : {snippetId: string}) {
     mutationKey: ['star', snippetId],
     mutationFn: async () => {
         const res = await axios.post(`/api/snippet/star/${snippetId}`, null, { withCredentials: true})
-        await new Promise(r => setTimeout(r,5000))
+        // await new Promise(r => setTimeout(r,5000))
         return res.data
     },
     onMutate: () => {
@@ -43,7 +43,9 @@ export default function StarButton({snippetId} : {snippetId: string}) {
   return <button disabled={isPending} onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
+        // const id = toast.loading('Starring...')
         starSnippet()
+        // toast.dismiss(id)
   }} className={twMerge('flex items-center gap-2 px-3 py-1.5 rounded-lg', isStarred ? 'bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20' : 'bg-gray-500/10 text-gray-400 hover:bg-gray-500/20')}>
            <Star className={twMerge('size-5', isStarred ? "fill-yellow-500" : 'fill-none hover:fill-gray-400 hover: transition-colors duration-200')}/>
            <span className={twMerge('text-xs font-semibold', isStarred ? 'text-yellow-500' : 'text-gray-400')}>{starCount < 100 ? starCount : '100+'}</span>

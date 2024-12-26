@@ -48,8 +48,9 @@ export async function getSnippet(req: Request, res: Response) {
     try {
 
         const { id } = req.params
+        console.log(id)
         const snippet = await db.snippet.findUnique({ where: {id}})
-
+        console.log(snippet)
         res.status(200).json({snippet})
 
     } catch(err) {

@@ -15,21 +15,27 @@ export default function Snippet() {
 
     const { id } = useParams()
     const navigate = useNavigate()
+    console.log(id)
     const {data: snippet} = useQuery<Snippet>({
       queryKey: ['getSnippet', id],
       queryFn: async () => {
          try {
-            const { data: { snippet }} = await axios.get(`/api/snippet/getSnippet/${id}`)
-            return snippet
+            const { data } = await axios.get(`/api/snippet/getSnippet/${id}`)
+            console.log(snippet)
+            return data.snippet || null
          } catch(err) {
-          console.error(err)
-          throw new Error('Error fetching snippet')
+           console.error(err)
+           return null
+          //  throw new Error('Error fetching snippet')
          }
-      }
+      },
+      enabled: !!id
     })
 
-    if(!snippet) navigate('/editor')
-
+    if(!snippet) {
+      navigate('/editor')
+      return null
+    }
 
   return <div className="w-full min-h-screen flex-center">
         {snippet?.id}
