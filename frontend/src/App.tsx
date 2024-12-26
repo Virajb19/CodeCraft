@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import './index.css'
 import { useAuth } from './lib/useAuth';
 import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
               <Route path='/editor' element={isAuth ? <EditorPage /> : <Navigate to={'/'}/>} />
               <Route path='/snippets' element={isAuth ? <SnippetsPage /> : <Navigate to={'/'}/>}/>
               <Route path='/snippet/:id' element={isAuth ? <Snippet /> : <Navigate to={'/'}/>}/>
+              <Route path='/profile' element={isAuth ? <Profile /> : <Navigate to={'/'}/>}/>
               <Route path='*' element={<NotFound />} />
           </Routes>
       </div>

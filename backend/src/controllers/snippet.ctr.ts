@@ -48,9 +48,9 @@ export async function getSnippet(req: Request, res: Response) {
     try {
 
         const { id } = req.params
-        console.log(id)
+
         const snippet = await db.snippet.findUnique({ where: {id}})
-        console.log(snippet)
+        
         res.status(200).json({snippet})
 
     } catch(err) {
@@ -114,6 +114,24 @@ export async function starSnippet(req: Request, res: Response) {
         await db.star.create({data: {userId, snippetId: id}})
         const starCount = await db.star.count({where: {snippetId: id}})
         res.status(201).json({ isStarred: true, starCount})
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+    }
+}
+
+export async function getStarredSnippets(req: Request, res: Response) {
+    try {
+        const userId = req.user?.id
+        if(!userId) {
+          res.status(401).json({msg: 'Not authorized'})
+          return
+        } 
+
+        const snippets = await db.snippet.findMany({where: {userId, stars: {some: {userId}}}, include: {stars: true}})
+
+        res.status(200).json({starredSnippets: snippets})
+
     } catch(err) {
         console.error(err)
         res.status(500).json({msg: 'Internal server error'})

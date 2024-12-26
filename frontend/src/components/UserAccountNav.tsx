@@ -8,8 +8,8 @@ import {
 import { useAuth } from "@/lib/useAuth";
 import { Avatar } from "@radix-ui/react-avatar";
 import axios from '../lib/utils';
-import { LogOut, User } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
+import { LogOut, User, User2 } from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function UserAccountNav() {
 
@@ -37,13 +37,19 @@ export default function UserAccountNav() {
 
                     <DropdownMenuSeparator />
 
+                    <DropdownMenuItem>
+                        <Link to={'/profile'} className="flex items-center gap-2 text-base"><User2 className="size-4" strokeWidth={3}/> Profile</Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+
                     <DropdownMenuItem className='outline-none cursor-pointer' onClick={async () => {
                          await axios.get('/api/auth/logout', { withCredentials: true})
                          navigate('/')
                     }}>
-                       <span className='flex items-center gap-2 text-base transition-all duration-300 hover:text-red-500'>Log out <LogOut className='size-4'/></span>
+                       <span className='flex items-center gap-2 text-base transition-all duration-300 hover:text-red-500'><LogOut className='size-4'/> Log out</span>
                        </DropdownMenuItem>
-
+                       
                     </DropdownMenuContent>
                 </DropdownMenu>
   </main>

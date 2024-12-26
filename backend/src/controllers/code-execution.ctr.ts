@@ -27,3 +27,22 @@ export async function createCodeExecution(req: Request, res: Response) {
     res.status(500).json({msg: 'Internal server error'})
   }
 }
+
+export async function getExecutions(req: Request, res: Response) {
+    try {
+      const userId = req.user?.id
+      if(!userId) {
+        res.status(401).json({msg: 'Not authorized'})
+        return
+      }
+
+      const executions = await db.codeExecution.findMany({ where: {userId}})
+      const executionsInLast24hrs = await db.codeExecution.count({where: {createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000)}}})
+
+      res.status(200).json({executions, executionsInLast24hrs})
+
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({msg: 'Internal server error'})
+    }
+}
