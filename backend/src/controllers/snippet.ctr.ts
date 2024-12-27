@@ -137,3 +137,22 @@ export async function getStarredSnippets(req: Request, res: Response) {
         res.status(500).json({msg: 'Internal server error'})
     }
 }
+
+export async function getStarCount(req: Request, res: Response) {
+   try {
+        const userId = req.user?.id
+            if(!userId) {
+            res.status(401).json({msg: 'Not authorized'})
+            return
+        } 
+
+        const { id } = req.params
+
+        const starCount = await db.star.count({ where: { snippetId: id}})
+
+        res.status(200).json({starCount: starCount})
+   } catch(err) {
+    console.error(err)
+    res.status(500).json({msg: 'Internal server error'})
+   }
+}
