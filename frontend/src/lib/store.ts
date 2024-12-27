@@ -33,6 +33,24 @@ type CodeEditorState = {
     runCode: () => Promise<void>;
   }
 
+// type userProfileState = {
+//   executions: Execution[];
+//   executionsInLast24hrs: number;
+//   starredSnippets: Snippet[];
+//   totalExecutions: number;
+//   languagesCount: number;
+//   languageStats: Record<string, number>;
+//   languages: string[];
+//   favoriteLanguage: string;
+//   mostStarredLanguage: string;
+//   starredLanguages: Record<string, number>;
+//   isLoading: boolean;
+// }
+
+// export const useProfileStore = create<userProfileState>((set, get) => ({
+ 
+// }))
+
 export const useLangStore = create<selectedLang>((set) => ({
     selectedLang: localStorage.getItem('lang') || 'Javascript',
     setSelectedLang: (lang) => {

@@ -1,6 +1,5 @@
 import { Blocks, Code2 } from 'lucide-react';
 import { Select, SelectContent, SelectValue, SelectItem, SelectTrigger } from './ui/select';
-import { ThemeToggle } from './theme-toggler';
 import { useCodeEditorStore } from '@/lib/store';
 import ThemeSelector from './ThemeSelector';
 import RunButton from './run-button';

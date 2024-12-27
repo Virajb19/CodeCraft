@@ -36,7 +36,7 @@ export async function getExecutions(req: Request, res: Response) {
         return
       }
 
-      const executions = await db.codeExecution.findMany({ where: {userId}})
+      const executions = await db.codeExecution.findMany({ where: {userId}, orderBy: {createdAt: 'desc'}})
       const executionsInLast24hrs = await db.codeExecution.count({where: {createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000)}}})
 
       res.status(200).json({executions, executionsInLast24hrs})

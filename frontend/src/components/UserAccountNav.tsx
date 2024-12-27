@@ -13,15 +13,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function UserAccountNav() {
 
- const { user } = useAuth()
+ const { user, isLoading } = useAuth()
  const navigate = useNavigate()
 
   return <main>
              <DropdownMenu modal={false}>
                     <DropdownMenuTrigger>
                         <Avatar>
-                            {user?.image ? (
-                             <img src={user?.image} alt="user" className="rounded-full object-cover size-11"/>
+                            {(!isLoading && user?.image) ? (
+                             <img src={user?.image ?? undefined} alt="user" className="rounded-full object-cover size-11"/>
                             ): (
                                 <div className="p-3 rounded-full bg-gradient-to-b from-blue-400 to-blue-700"><User className=""/></div>
                             )}

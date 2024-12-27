@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Dialog, DialogHeader, DialogTrigger, DialogContent, DialogTitle } from "./ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from './ui/form'
 import { ShareIcon } from 'lucide-react'
@@ -38,6 +38,16 @@ export default function SaveButton() {
           toast.error('Failed to save code. Try again !!!', { position: 'top-center'})
      } 
     }) 
+
+    useEffect(() => {
+     const openDialog = (e: KeyboardEvent) => {
+        if(e.ctrlKey && e.key === 'k') {
+          setOpen(prev => !prev)
+        }
+     }
+       document.addEventListener('keydown', openDialog)
+       return () => document.removeEventListener('keydown', openDialog)
+    }, [])
 
   async function onSubmit(data: Input) {
      const code = getCode()
