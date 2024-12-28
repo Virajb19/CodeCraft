@@ -1,4 +1,3 @@
-import { BackgroundBeams } from '@/components/ui/background-beams'
 import { Card, CardContent, CardTitle, CardHeader} from '../components/ui/card'
 import { FaGithub } from "react-icons/fa";
 import { useAuth } from '@/lib/useAuth';
@@ -11,7 +10,6 @@ export default function HomePage() {
     const { user, isLoading} = useAuth()
 
   return <div className="w-full min-h-screen flex-center bg-gradient-to-r from-blue-500/10 to-purple-500/10">
-       <BackgroundBeams />
             <Card className='z-10'>
                 <CardHeader>
                      <CardTitle className='text-5xl'>Welcome to <span className='bg-gradient-to-r from-blue-600 to-purple-700 text-transparent bg-clip-text'>CodeCraft</span></CardTitle>

@@ -56,8 +56,8 @@ export default function SaveButton() {
 
   return <Dialog open={open} onOpenChange={setOpen}>
        <DialogTrigger>
-          <button className="flex items-center gap-3 opacity-75 font-semibold hover:opacity-100 duration-200 transition-opacity px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600">
-            <ShareIcon className="size-4" strokeWidth={3}/>Save
+          <button className="flex group items-center gap-3 opacity-75 font-semibold hover:opacity-100 duration-200 transition-opacity px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600">
+            <ShareIcon className="size-4 group-hover:-translate-y-1 duration-300" strokeWidth={3}/>Save
         </button>
        </DialogTrigger>
        <DialogContent>

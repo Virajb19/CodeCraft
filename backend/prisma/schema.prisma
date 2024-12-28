@@ -29,6 +29,22 @@ model User {
   snippets Snippet[]
   codeExecutions CodeExecution[]
   stars Star[]
+
+  ownedRooms Room[] @relation("RoomOwner")
+  participatingRooms Room[] @relation("RoomParticipants")
+}
+
+model Room {
+  id String @id @default(cuid())
+  
+  title String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ownerId Int
+  owner User @relation("RoomOwner",fields: [ownerId], references: [id])
+
+  participants User[] @relation("RoomParticipants")
 }
 
 model Snippet {
@@ -69,5 +85,6 @@ model Star {
 
   @@unique([userId,snippetId])
 }
+
 
 

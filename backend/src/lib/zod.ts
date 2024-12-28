@@ -25,3 +25,8 @@ export const createSnippetSchema = z.object({
     language: z.string(),
     code: z.string()
 })
+
+export const createRoomSchema = z.object({
+    title: z.string().min(1)
+})
+

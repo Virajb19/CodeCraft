@@ -5,6 +5,7 @@ import ThemeSelector from './ThemeSelector';
 import RunButton from './run-button';
 import { Link } from 'react-router-dom'
 import UserAccountNav from './UserAccountNav';
+import CreateRoomButton from './CreateRoomButton';
 
 export default function Navbar() {
 
@@ -43,6 +44,8 @@ export default function Navbar() {
               </span>
             </Link>
           </div>
+
+          <CreateRoomButton />
       </div>
           
           <div className='flex items-center gap-2'>

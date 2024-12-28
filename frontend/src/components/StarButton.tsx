@@ -9,7 +9,7 @@ import { useLocalStorage } from 'usehooks-ts'
 export default function StarButton({snippetId} : {snippetId: string}) {
 
   // USE LOCAL STORAGE OR SEE CONVEX/SNIPPETS.TS fire a query
-  const [isStarred, setIsStarred] = useLocalStorage('isStarred',false)
+  const [isStarred, setIsStarred] = useLocalStorage(`isStarred-${snippetId}`,false)
   const [starCount, setStarCount] = useState(0)
 
   const {data: count} = useQuery<number>({
