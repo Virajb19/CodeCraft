@@ -44,7 +44,7 @@ export default function RunButton() {
           </>
       ) : (
         <>
-          <Play className="size-5 text-white/90 transition-transform group-hover:scale-110 group-hover:text-white"/>
+          <Play className="size-5 text-white/90 transition-transform group-hover:-translate-x-1 group-hover:text-white"/>
           <span className="text-white/90 group-hover:text-white font-semibold">Run Code</span>
         </>
       )}

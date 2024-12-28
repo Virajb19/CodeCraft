@@ -11,15 +11,16 @@ export default function Navbar() {
   const { setLanguage } = useCodeEditorStore()
 
   return <nav className="fixed inset-x-0 top-0 flex gap-3 items-center justify-between backdrop-blur-md z-40 p-4 bg-[#0a0a0f]/80 border-b border-gray-600">
+       <div className='flex items-center gap-3'>
        <div className='flex gap-3 items-center group'>
           <span>
               <Blocks className='size-10 text-blue-400 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500'/>
           </span>
           <div className="flex flex-col">
-              <span className="block text-lg font-semibold bg-gradient-to-r from-blue-400 via-blue-300 to-purple-400 text-transparent bg-clip-text">
+              <span className="block text-xl font-bold tracking-wide bg-gradient-to-r from-blue-400 via-blue-300 to-purple-400 text-transparent bg-clip-text">
                 CodeCraft
               </span>
-              <span className="block text-xs text-blue-400/60 font-medium">
+              <span className="block text-sm text-blue-400/60 font-medium">
                 Interactive Code Editor
               </span>
             </div>
@@ -33,7 +34,7 @@ export default function Navbar() {
                 className="absolute inset-0 bg-gradient-to-r from-blue-500/10
                 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity"
               />
-            <Code2 className="w-4 h-4 relative z-10 group-hover:rotate-3 transition-transform" />
+            <Code2 className="w-4 h-4 relative z-10 group-hover:rotate-5 transition-transform" />
               <span
                 className="text-lg font-medium group-hover:text-white
                  transition-colors"
@@ -42,20 +43,25 @@ export default function Navbar() {
               </span>
             </Link>
           </div>
-          <Select onValueChange={val => setLanguage(val)}>
-                  <SelectTrigger className='w-[300px] outline-none'>
-                      <SelectValue placeholder='Select a language'/>
-                  </SelectTrigger>
-                  <SelectContent>
-                  {["JavaScript", "Python", "Java", "Cpp", "Csharp", "Ruby", "Swift", "Go", "Rust", "TypeScript"].map(lang => {
-                     return <SelectItem key={lang} value={lang} className='font-semibold'>
-                         {lang}
-                     </SelectItem>
-                  })}
-                  </SelectContent>
-               </Select>
-            <ThemeSelector />
-            <RunButton />
-            <UserAccountNav />
+      </div>
+          
+          <div className='flex items-center gap-2'>
+            <Select onValueChange={val => setLanguage(val)}>
+                    <SelectTrigger className='w-[200px] outline-none'>
+                        <SelectValue placeholder='Select a language'/>
+                    </SelectTrigger>
+                    <SelectContent>
+                    {["JavaScript", "Python", "Java", "Cpp", "Csharp", "Ruby", "Swift", "Go", "Rust", "TypeScript"].map(lang => {
+                      return <SelectItem key={lang} value={lang} className='font-semibold'>
+                          {lang}
+                      </SelectItem>
+                    })}
+                    </SelectContent>
+                </Select>
+              <ThemeSelector />
+              <RunButton />
+               <div className='w-[2px] h-12 bg-gray-700 mx-2'/>
+              <UserAccountNav />
+          </div>
   </nav>
 }
