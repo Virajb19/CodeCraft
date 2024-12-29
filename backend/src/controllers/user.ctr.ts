@@ -66,3 +66,58 @@ export async function joinRoom(req: Request, res: Response) {
       res.status(500).json({msg: 'Internal server error'})
    }
 }
+
+export async function getRoom(req: Request, res: Response) {
+     try {
+
+         const userId = req.user?.id
+         if(!userId) {
+            res.status(401).json({msg: 'Not authorized'})
+            return
+        } 
+   
+        const { id } = req.params
+   
+        const room = await db.room.findUnique({where: {id}, include: {owner: {select: {username: true, ProfilePicture: true}}, participants: {select: {id: true,username: true, ProfilePicture: true}}}})
+        if(!room) {
+          res.status(404).json({msg: 'Room not found!'})
+          return
+        }
+        
+        res.status(200).json({room})
+     } catch(err) {
+      console.error(err)
+      res.status(500).json({msg: 'Internal server error'})
+     }
+}
+
+export async function leaveRoom(req: Request, res: Response) {
+    try {
+      const userId = req.user?.id
+         if(!userId) {
+            res.status(401).json({msg: 'Not authorized'})
+            return
+       } 
+
+       const { id } = req.params
+
+       const room = await db.room.findUnique({ where: { id}, include: { participants: { select: { id: true}}}})
+       if(!room) {
+          res.status(404).json({msg: 'room not found'})
+          return
+       }
+
+       if(room.ownerId === userId) {
+           await db.room.delete({ where: { id: room.id}})
+           res.status(203).json({msg: 'Deleted room successfully'})
+           return
+         // await db.room.update({ where: { id }, data: { ownerId: room.participants[0].id}})
+       }
+
+       await db.room.update({where: {id}, data: { participants: { disconnect: { id: userId}}}})
+       res.status(200).json({msg: 'Left the room'})
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({msg: 'Internal server error'})
+    }
+}

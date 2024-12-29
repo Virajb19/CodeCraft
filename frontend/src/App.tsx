@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import EditorPage from './pages/editor-page'
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'sonner'
@@ -11,19 +11,24 @@ import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import { BackgroundBeams } from './components/ui/background-beams';
 import RoomPage from './pages/RoomPage';
+import { Loader } from 'lucide-react';
 
 function App() {
 
-    const { user } = useAuth()
+    const { user, isLoading } = useAuth()
     const isAuth = !!user
 
-    console.log(isAuth)
+    const { pathname } = useLocation()
+
+    if(isLoading && pathname != '/') return <div className='w-full min-h-screen flex-center'>
+       <Loader className='size-20 animate-spin text-blue-600'/>
+    </div>
 
   return (
       <div className='w-full min-h-screen'>
           <Toaster richColors position='bottom-right' theme='dark'/>
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
-          {/* <BackgroundBeams className='-z-50'/> */}
+          <BackgroundBeams className='-z-50'/>
 
           <Routes>
               <Route path='/' element={isAuth ? <Navigate to={'/editor'}/> : <HomePage />}/>

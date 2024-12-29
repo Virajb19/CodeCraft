@@ -72,7 +72,7 @@ export default function ProfileHeader({userStats}: Props) {
 
                 <div className="flex flex-col gap-1">
                    <h1 className="text-3xl font-bold">{user?.name}</h1>
-                   <span className="flex items-center gap-2 text-sm"><User className="size-5"/>{'virajb853@gmail.com'}</span>
+                   <span className="flex items-center gap-2 text-sm"><User className="size-5"/>{user?.email ?? 'user@gmail.com'}</span>
                 </div>
              </div>
 

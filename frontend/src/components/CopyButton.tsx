@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'sonner';
 
-
 export default function CopyButton({code}: {code: string}) {
 
     const [copiedText, copy] = useCopyToClipboard()

@@ -24,6 +24,12 @@ authRouter.get('/callback/github', (req: Request, res: Response, next: NextFunct
     })(req, res, next);
 });
 
+authRouter.get('/google', passport.authenticate('google', {scope: ['email','profile']}))
+
+authRouter.get('/google/callback', passport.authenticate('google', {
+    successRedirect: process.env.CLIENT_BASE_URL as string,
+    failureRedirect: process.env.CLIENT_BASE_URL as string + '/editor'
+}))
 
 authRouter.get('/check',(req: Request, res: Response) => {
     if (req.isAuthenticated()) {

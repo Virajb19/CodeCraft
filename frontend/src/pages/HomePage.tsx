@@ -4,6 +4,8 @@ import { useAuth } from '@/lib/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from 'react-router-dom';
 import { ArrowRight} from 'lucide-react'
+import { FcGoogle } from "react-icons/fc";
+import { BACKEND_URL } from '../lib/utils'
 
 export default function HomePage() {
 
@@ -16,20 +18,29 @@ export default function HomePage() {
                 </CardHeader>
                   <CardContent>
                      {isLoading ? <Skeleton className='h-14'/> : (
-                       <div className='bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
-						             focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg text-lg'>
-                          {
-                             user ? <Link to={'/editor'} className='group w-full flex-center gap-3 text-lg p-4'>
+                             user ? <Link to={'/editor'} className='group w-full flex-center gap-3 text-lg p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
+						               focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg'>
                                 Go to Editor <ArrowRight className='group-hover:translate-x-3 duration-200'/>
                              </Link>
-                             : <button onClick={() => {
-                                 window.open('http://localhost:3000/api/auth/github', "_self")
-                             }} className='w-full flex-center gap-3 p-4'>
-                              <FaGithub className='size-7'/>
-                              Login to your account
-                             </button>
-                          }
-                       </div>
+                             : (
+                               <div className='flex flex-col gap-2'>
+
+                                 <button onClick={() => {
+                                    window.open(`${BACKEND_URL}/api/auth/github`, "_self")
+                                    }} className='w-full flex-center gap-3 p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
+						                   focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg text-lg'>
+                                       <FaGithub className='size-7'/>
+                                       Login with Github
+                               </button>
+
+                                    <button onClick={() => {
+                                        window.open(`${BACKEND_URL}/api/auth/google/callback`, "_self")
+                                    }} className='gap-3 p-4 flex-center text-lg bg-white rounded-lg text-black font-semibold hover:opacity-80 duration-200'>
+                                       <FcGoogle className='size-7'/>
+                                          Login with Google
+                                    </button>
+                               </div>
+                             )
                      )}
                   </CardContent>
             </Card>

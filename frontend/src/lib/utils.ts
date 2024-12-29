@@ -37,3 +37,13 @@ export type Snippet = {
   language: string;
   code: string;
 }
+
+export type Room = {
+  id: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  ownerId: number;
+  owner: { username: string,  ProfilePicture: string | null}
+  participants:  {id: string, username: string,  ProfilePicture: string | null} []
+}

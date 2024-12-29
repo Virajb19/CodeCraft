@@ -8,11 +8,12 @@ import { isAuthenticated } from './middleware/auth.middleware';
 import { authRouter } from './routes/auth.routes';
 import { executionRouter } from './routes/code-execution.routes';
 import { snippetRouter } from './routes/snippet.routes';
-import './lib/passport.config'
 import http from 'http'
 import { Server } from 'socket.io'
 
 dotenv.config();
+
+import './lib/passport.config'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,12 +25,36 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
     credentials: true
   }
-})
+}) 
+
+declare module 'socket.io' {
+  interface Socket {
+    username?: string;
+  }
+}
+
+let userSocketMap: Record<string, string> = {}
+
+const getUsersInRoom = (roomId: string) => {
+  return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(socketId => ({socketId, username: userSocketMap[socketId]}))
+}
 
 io.on('connection', socket => {
     console.log(`user connected ${socket.id}`)
 
-    socket.join
+    socket.on('join', ({roomId, username}) => {
+        userSocketMap[socket.id] = username
+        socket.join(roomId)
+
+        const participants = getUsersInRoom(roomId)
+
+        console.log(participants)
+
+        participants.forEach(p => {
+           io.to(p.socketId).emit('joined')
+        })
+    })
+
 })
 
 app.use(cors({

@@ -6,10 +6,10 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/useAuth";
-import { Avatar } from "@radix-ui/react-avatar";
 import axios from '../lib/utils';
 import { LogOut, User, User2 } from 'lucide-react';
 import { Link, useNavigate } from "react-router-dom";
+import { Avatar } from "@radix-ui/react-avatar";
 
 export default function UserAccountNav() {
 
@@ -21,7 +21,7 @@ export default function UserAccountNav() {
                     <DropdownMenuTrigger>
                         <Avatar>
                             {(!isLoading && user?.image) ? (
-                             <img src={user?.image ?? undefined} alt="user" className="rounded-full object-cover size-11"/>
+                             <img src={user?.image ?? undefined} alt="user" referrerPolicy="no-referrer" className="rounded-full object-cover size-11"/>
                             ): (
                                 <div className="p-3 rounded-full bg-gradient-to-b from-blue-400 to-blue-700"><User className=""/></div>
                             )}
@@ -30,7 +30,7 @@ export default function UserAccountNav() {
                     <DropdownMenuContent className='m-2 min-w-44 z-[99999] rounded-md bg-neutral-100 dark:bg-neutral-900' align='center'> 
                      <DropdownMenuItem>
                         <div className='flex flex-col'>
-                            {user?.name && <p className='text-lg'>{user.name}</p>}
+                            {user?.name && <p className='text-lg truncate'>{user.name}</p>}
                             {user?.email && <p className='text-sm text-zinc-500 truncate'>{user.email}</p>}
                         </div>
                     </DropdownMenuItem>

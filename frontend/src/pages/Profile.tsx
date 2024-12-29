@@ -26,6 +26,7 @@ async function fetchStarredSnippets() {
       return starredSnippets
     } catch(err) {
         console.error(err)
+        throw new Error('Error fetching starred Snippets')
     }
 }
 

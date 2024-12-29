@@ -56,7 +56,6 @@ export default function CreateRoomButton() {
 
 
     async function handleCreateRoom(data: createRoomInput) {
-        alert('created')
         await createRoom(data, {
             onSuccess: (roomId: string) => {
                setIsOpen(false)
@@ -73,7 +72,6 @@ export default function CreateRoomButton() {
     } 
 
     async function handleJoinRoom(data: joinRoomInput) {
-       alert('joined')
        await joinRoom(data.roomId, {
          onSettled: () => setIsOpen(false),
          onSuccess: () => {
