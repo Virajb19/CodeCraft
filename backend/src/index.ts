@@ -30,29 +30,59 @@ const io = new Server(server, {
 declare module 'socket.io' {
   interface Socket {
     username?: string;
+    userId?: number
   }
 }
 
-let userSocketMap: Record<string, string> = {}
+let userSocketMap: Record<string, { userId: number, username: string}> = {}
 
 const getUsersInRoom = (roomId: string) => {
-  return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(socketId => ({socketId, username: userSocketMap[socketId]}))
+  let participants = Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(socketId => ({socketId, userId: userSocketMap[socketId].userId, username: userSocketMap[socketId].username}))
+  const set = new Set()
+  participants = participants.filter(p => {
+     if(set.has(p.userId)) return false
+     set.add(p.userId)
+     return true
+  })
+  return participants
 }
 
 io.on('connection', socket => {
     console.log(`user connected ${socket.id}`)
 
-    socket.on('join', ({roomId, username}) => {
-        userSocketMap[socket.id] = username
+    socket.on('join', ({roomId, username, userId}) => {
+        userSocketMap[socket.id] = { userId, username}
         socket.join(roomId)
 
-        const participants = getUsersInRoom(roomId)
-
-        console.log(participants)
-
-        participants.forEach(p => {
-           io.to(p.socketId).emit('joined')
+        let participants = getUsersInRoom(roomId)
+          
+        socket.to(roomId).emit('joined', {
+          participants,
+          username,
+          userId,
+          socketId: socket.id
         })
+    })
+
+    socket.on('code-change', ({roomId, code}) => {
+       socket.in(roomId).emit('code-change', { code })
+    })
+
+    socket.on('sync-code', ({socketId, code}) => {
+      io.to(socketId).emit('code-change', { code })
+    })
+
+    socket.on('disconnecting', () => {
+      const rooms = [...socket.rooms]
+      rooms.forEach(roomId => {
+         socket.in(roomId).emit('disconnected', {
+            socketId: socket.id, 
+            username: userSocketMap[socket.id].username,
+            userId: userSocketMap[socket.id].userId
+         })
+         socket.leave(roomId)
+      })
+      delete userSocketMap[socket.id]
     })
 
 })

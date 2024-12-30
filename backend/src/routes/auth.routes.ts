@@ -28,7 +28,7 @@ authRouter.get('/google', passport.authenticate('google', {scope: ['email','prof
 
 authRouter.get('/google/callback', passport.authenticate('google', {
     successRedirect: process.env.CLIENT_BASE_URL as string,
-    failureRedirect: process.env.CLIENT_BASE_URL as string + '/editor'
+    failureRedirect: process.env.CLIENT_BASE_URL as string
 }))
 
 authRouter.get('/check',(req: Request, res: Response) => {

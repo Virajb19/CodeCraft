@@ -26,7 +26,7 @@ const { theme, setTheme } = useCodeEditorStore()
               <SelectContent>
                   {THEMES.map(t => {
                       return <SelectItem key={t.id} value={t.id} className="">
-                          <div className={twMerge("flex items-center gap-2 px-3 py-2.5 hover:bg-[#262637] transition-all duration-200", theme === t.id ? 'text-blue-400' : 'text-gray-300')}>
+                          <div className={twMerge("flex items-center gap-2 px-3 py-2.5 transition-all duration-200", theme === t.id ? 'text-blue-400' : 'text-gray-300')}>
                             {THEME_ICONS[t.id]} {t.label}
                           </div>
                       </SelectItem>

@@ -32,6 +32,8 @@ model User {
 
   ownedRooms Room[] @relation("RoomOwner")
   participatingRooms Room[] @relation("RoomParticipants")
+
+  // userRooms UserToRoom[]
 }
 
 model Room {
@@ -45,7 +47,21 @@ model Room {
   owner User @relation("RoomOwner",fields: [ownerId], references: [id])
 
   participants User[] @relation("RoomParticipants")
+
+  // userRooms UserToRoom[]
 }
+
+// model UserToRoom {
+//    connectedAt DateTime @default(now())
+
+//    userId Int
+//    user  User @relation(fields: [userId], references: [id])
+
+//    roomId String
+//    room Room @relation(fields: [roomId], references: [id])
+
+//    @@id([roomId, userId])
+// }
 
 model Snippet {
   id String @id @default(cuid())

@@ -28,10 +28,10 @@ function App() {
       <div className='w-full min-h-screen'>
           <Toaster richColors position='bottom-right' theme='dark'/>
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
-          <BackgroundBeams className='-z-50'/>
+          {!pathname.includes('/room') && <BackgroundBeams className='-z-50'/>}
 
           <Routes>
-              <Route path='/' element={isAuth ? <Navigate to={'/editor'}/> : <HomePage />}/>
+              <Route path='/' element={<HomePage />}/>
               <Route path='/editor' element={isAuth ? <EditorPage /> : <Navigate to={'/'}/>} />
               <Route path='/snippets' element={isAuth ? <SnippetsPage /> : <Navigate to={'/'}/>}/>
               <Route path='/snippet/:id' element={isAuth ? <Snippet /> : <Navigate to={'/'}/>}/>

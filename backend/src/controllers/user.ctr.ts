@@ -78,7 +78,7 @@ export async function getRoom(req: Request, res: Response) {
    
         const { id } = req.params
    
-        const room = await db.room.findUnique({where: {id}, include: {owner: {select: {username: true, ProfilePicture: true}}, participants: {select: {id: true,username: true, ProfilePicture: true}}}})
+        const room = await db.room.findUnique({where: {id}, include: {owner: {select: {id: true, username: true, ProfilePicture: true}}, participants: {select: {id: true,username: true, ProfilePicture: true}}}})
         if(!room) {
           res.status(404).json({msg: 'Room not found!'})
           return

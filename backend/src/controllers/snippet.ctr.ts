@@ -156,3 +156,23 @@ export async function getStarCount(req: Request, res: Response) {
     res.status(500).json({msg: 'Internal server error'})
    }
 }
+
+export async function isStarred(req: Request, res: Response) {
+    try {
+        const userId = req.user?.id
+        if(!userId) {
+        res.status(401).json({msg: 'Not authorized'})
+        return
+    } 
+
+    const { id } = req.params
+
+    const star = await db.star.findFirst({ where: {userId,snippetId: id}})
+
+    res.status(200).json({isStarred: !!star})
+
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+    }
+}

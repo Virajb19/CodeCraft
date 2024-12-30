@@ -65,7 +65,7 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => ({
     error: null,
     executionResult: null,
     output: "",
-    language: localStorage.getItem('lang') || '', // This is initial value this value is given once on initial render or mount 
+    language: localStorage.getItem('lang') || 'javascript', // This is initial value this value is given once on initial render or mount 
     theme: localStorage.getItem('editor-theme') || 'vs-dark',
     fontSize: Number(localStorage.getItem('font-size') || '16'),
     setEditor: (editor: editor.IStandaloneCodeEditor) => {

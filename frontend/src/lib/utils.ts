@@ -45,5 +45,5 @@ export type Room = {
   updatedAt: Date;
   ownerId: number;
   owner: { username: string,  ProfilePicture: string | null}
-  participants:  {id: string, username: string,  ProfilePicture: string | null} []
+  participants:  {id: number, username: string,  ProfilePicture: string | null} []
 }

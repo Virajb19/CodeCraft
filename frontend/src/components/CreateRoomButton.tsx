@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { twMerge } from 'tailwind-merge';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from '../lib/utils'
 import { toast } from 'sonner';
 import { Loader } from 'lucide-react'
@@ -29,6 +29,8 @@ export default function CreateRoomButton() {
     const [isOpen, setIsOpen] = useState(false)
 
     const navigate = useNavigate()
+
+    const queryClient = useQueryClient()
 
     const createForm = useForm<createRoomInput>({
         resolver: zodResolver(createRoomSchema),
@@ -85,6 +87,7 @@ export default function CreateRoomButton() {
             }
          }
        })
+       queryClient.refetchQueries({ queryKey: ['getRoom']})
     }
 
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
