@@ -98,6 +98,7 @@ export default function RoomPage() {
            socketRef.current.on('joined', ({username, userId}) => {
                if(userId !== user?.id) {
                  toast.info(`${username} joined the room`, { position: 'top-center', duration: 5000, closeButton: true,})
+                 queryClient.refetchQueries({ queryKey: ['getRoom']})
                } 
            })
 
@@ -150,7 +151,7 @@ export default function RoomPage() {
  
   return <div className="w-full min-h-screen flex relative overflow-hidden">
               {/* <pre>{JSON.stringify(room)}</pre> */}
-         <motion.div id="sidebar" className="flex flex-col gap-1 p-2 w-[18%] border" initial={{x: '-100%'}} animate={{x: 0}} transition={{duration: 0.7, type: 'spring', damping: 15, stiffness: 200}}>
+         <motion.div id="sidebar" className="flex flex-col gap-1 p-2 w-1/5 border" initial={{x: '-100%'}} animate={{x: 0}} transition={{duration: 0.7, type: 'spring', damping: 15, stiffness: 200}}>
                <div id="header" className="flex items-center gap-3 border-b-2 border-gray-600 py-2">
                   <img src={'/code.png'} className="size-12"/>
                   <h2 className="text-4xl font-bold uppercase bg-gradient-to-r from-blue-600 to-purple-700 text-transparent bg-clip-text">CodeCraft</h2>
@@ -184,7 +185,8 @@ export default function RoomPage() {
                     {/* <div className="bg-red-700 h-[100vh] shrink-0" /> */}
                </ul>
 
-              {room?.ownerId === user?.id && <InviteUserButton roomId={room?.id ?? ''}/>}
+              {/* {room?.ownerId === user?.id && <InviteUserButton roomId={room?.id ?? ''}/>} */}
+              <InviteUserButton roomId={room?.id ?? ''}/>
               <button onClick={async () => {
                 await leaveRoom(room?.id ?? '')
                 // queryClient.refetchQueries({ queryKey: ['getRoom']}) This will run only for the client where button is clicked 

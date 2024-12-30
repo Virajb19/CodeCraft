@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 import { Skeleton } from './ui/skeleton';
+import RunButton from './run-button';
 
 
 export default function OutputPanel() {
@@ -36,6 +37,8 @@ const handleCopy = async () => {
                 </div>
                 <span className="text-sm font-medium text-gray-300">Output</span>
               </div>
+
+              <div className='flex items-center gap-3'>
               {hasContent && (
                  <button onClick={handleCopy} 
                    className={twMerge('border flex items-center gap-2 px-2.5 py-1.5 text-gray-400 bg-[#1e1e2e] rounded-lg ring-1 ring-gray-800/50 transition-all duration-200', 
@@ -53,6 +56,8 @@ const handleCopy = async () => {
                     )}
                  </button>
              )}
+              <RunButton />
+            </div>
         </div>
 
         <div className='h-[calc(90vh-9rem)] w-[42vw] overflow-scroll bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] text-sm rounded-xl p-2'>

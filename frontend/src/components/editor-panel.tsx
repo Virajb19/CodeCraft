@@ -33,7 +33,7 @@ export default function EditorPanel() {
   return <div className="w-[55%] p-1.5 bg-[#12121a]/90 rounded-xl border border-white/[0.05] backdrop-blur-sm">
         <div className="flex items-center justify-between ml-3">
            <div className="flex gap-2">
-             <img src={`/${lang}.png`} width={30} height={30} className="rounded-sm"/>
+             <img src={`/${lang}.png`} width={40} height={30} className="rounded-sm"/>
              <div className="flex flex-col">
                 <h2 className="text-sm font-medium text-white">Code Editor</h2>
                 <p className="text-xs text-gray-500">Write and execute your code</p>

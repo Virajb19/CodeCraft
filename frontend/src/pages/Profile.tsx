@@ -122,7 +122,7 @@ export default function Profile() {
                <div className="h-[2px] rounded-full my-3 bg-gray-700"/>
 
                <AnimatePresence mode="wait">
-                    <motion.div className="p-6 mx-10" key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}  exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
+                    <motion.div className="p-6 mx-10 grow" key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}  exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
                        
                        {activeTab === 'executions' && (
                         <>
@@ -163,13 +163,13 @@ export default function Profile() {
                          </div>
 
                          {loadingExecutions ? (
-                          <div className="grow flex-center gap-3 py-20">
+                          <div className="grow flex-center gap-3 my-20">
                                <Loader2 className="size-12 text-gray-600 animate-spin"/>
                                <h2 className="text-4xl font-semibold">Loading code executions...</h2>
                           </div>
                        ) : (
                          executionsData?.executions.length === 0 && (
-                           <div className="grow flex-center flex-col gap-1">
+                           <div className="grow flex-center flex-col gap-1 my-20">
                                <div className="flex items-center gap-2">
                                   <Code className="size-12 text-gray-600"/>
                                   <h2 className="font-semibold text-3xl">No code executions yet</h2>
@@ -186,13 +186,13 @@ export default function Profile() {
                         <>
 
                       {loadingSnippets ? (
-                          <div className="grow flex-center gap-3 py-20">
+                          <div className="grow flex-center gap-3 my-20">
                                <Loader2 className="size-12 text-gray-600 animate-spin"/>
                                <h2 className="text-4xl font-semibold">Loading starred snippets...</h2>
                           </div>
                        ) : (
                          starredSnippets?.length === 0 ? (
-                           <div className="grow flex-center flex-col gap-1">
+                           <div className="grow flex-center flex-col gap-1 my-20">
                                <div className="flex items-center gap-2">
                                   <Code className="size-12 text-gray-600"/>
                                   <h2 className="font-semibold text-3xl">No starred snippets yet</h2>

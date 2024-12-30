@@ -18,7 +18,7 @@ export default function Navbar() {
               <Blocks className='size-10 text-blue-400 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500'/>
           </span>
           <div className="flex flex-col">
-              <span className="block text-2xl font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-700 text-transparent bg-clip-text">
+              <span className="block uppercase text-2xl font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-700 text-transparent bg-clip-text">
                 CodeCraft
               </span>
               <span className="block text-sm text-blue-400/60 font-medium">

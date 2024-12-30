@@ -1,8 +1,10 @@
 import { Editor } from "@monaco-editor/react";
 import { motion } from 'framer-motion'
 import { editor } from "monaco-editor";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Socket } from "socket.io-client";
+import { toast } from "sonner";
+import { useDebounceCallback } from 'usehooks-ts'
 
 type Props = {
     socket: Socket | null,
@@ -14,16 +16,24 @@ export default function CollaborativeCodeEditor({socket, roomId}: Props) {
     const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | null>(null)
     const [code, setCode] = useState('')
 
+    const debounced = useDebounceCallback(setCode, 300)
+
+    const handleCodeChange = useCallback((val: string | undefined) => {
+       if(val) setCode(val)
+    }, [])
+
     useEffect(() => {
         socket?.emit('code-change', {
             roomId,
             code
-        })     
+        })   
+        // toast.info(code)  
     }, [code])
 
     useEffect(() => {
        socket?.on('code-change', ({ code }) => {
-          setCode(code)
+          editor?.setValue(code)
+        // setCode(code)
        })
 
        return () => {
@@ -34,7 +44,7 @@ export default function CollaborativeCodeEditor({socket, roomId}: Props) {
   return  <motion.div initial={{x: '100%'}} animate={{x: 0}} transition={{duration: 0.7, ease: 'easeInOut', bounce: 2}} className="grow">
             <Editor 
             language="javascript"
-            onChange={val => val && setCode(val)}
+            onChange={handleCodeChange}
             onMount={editor => setEditor(editor)}
             value={code}
             theme="vs-dark"

@@ -45,7 +45,7 @@ export default function SnippetsPage() {
 
     const filteredSnippets = snippets?.filter(snippet => {
         const matchesSearch = snippet.title.toLowerCase().includes(searchQuery) || snippet.language.toLowerCase().includes(searchQuery) 
-        const matchesLang = (selectedLang != null) && snippet.language === languages[selectedLang]
+        const matchesLang = selectedLang != null ? snippet.language === languages[selectedLang] : true
 
         return matchesSearch && matchesLang
     })

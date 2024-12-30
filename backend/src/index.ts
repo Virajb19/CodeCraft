@@ -65,11 +65,12 @@ io.on('connection', socket => {
     })
 
     socket.on('code-change', ({roomId, code}) => {
+       console.log(code)
        socket.in(roomId).emit('code-change', { code })
     })
 
     socket.on('sync-code', ({socketId, code}) => {
-      io.to(socketId).emit('code-change', { code })
+      io.to(socketId).emit('sync-code', { code })
     })
 
     socket.on('disconnecting', () => {
@@ -97,7 +98,7 @@ app.use(express.json())
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
 }))
 
 app.use(passport.initialize());
