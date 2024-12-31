@@ -7,6 +7,8 @@ import { twMerge } from "tailwind-merge";
 import { AnimatePresence, motion } from 'framer-motion'
 import CodeBlock from "@/components/CodeBlock";
 import SnippetCard from "@/components/SnippetCard";
+import { useAuth } from "@/lib/useAuth";
+import DeleteButton from "@/components/DeleteButton";
 
 async function fetchExecutions() {
    try {
@@ -45,6 +47,8 @@ const TABS = [
 
 
 export default function Profile() {
+
+    const { user } = useAuth()
 
     const [activeTab,setActiveTab] = useState<'executions' | 'starred'>('executions')
 
@@ -128,7 +132,7 @@ export default function Profile() {
                         <>
                          <div className="flex flex-col gap-3">
                               {executionsData?.executions.map(execution => {
-                                return <div key={execution.id} className="group border border-transparent transition-all duration-300 rounded-xl hover:border-blue-500/50 hover:shadow-md hover:shadow-blue-500/50">
+                                return <div key={execution.id} className="group relative border border-transparent transition-all duration-300 rounded-xl hover:border-blue-500/50 hover:shadow-md hover:shadow-blue-500/50">
                                       <div id="header" className="flex gap-3 p-4 relative bg-black/30 border border-gray-800/50 rounded-t-xl">
                                           
                                           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-20 group-hover:opacity-30 transition-opacity"/>
@@ -158,6 +162,9 @@ export default function Profile() {
                                              </div>
                                            )}
                                       </div>
+
+                                    {execution.userId === user?.id && <DeleteButton executionId={execution.id}/>}
+
                                 </div>
                               })}
                          </div>

@@ -46,3 +46,34 @@ export async function getExecutions(req: Request, res: Response) {
       res.status(500).json({msg: 'Internal server error'})
     }
 }
+
+export async function deleteExecution(req: Request, res: Response) {
+    try {
+      const userId = req.user?.id
+      if(!userId) {
+        res.status(401).json({msg: 'Not authorized'})
+        return
+      }
+
+      const { id } = req.params
+
+      const codeExecution = await db.codeExecution.findUnique({where: {id}})
+      if(!codeExecution) {
+          res.status(404).json({msg: 'CodeExecution not found'})
+          return
+      }
+
+      if(codeExecution.userId !== userId) {
+          res.status(403).json({msg: 'You are not authorized to delete this execution!!'})
+          return
+      }
+
+      await db.codeExecution.delete({ where: { id: codeExecution.id}})
+
+      res.status(200).json({msg: 'Deleted successfully'})
+      
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({msg: 'Internal server error'})
+    }
+}
