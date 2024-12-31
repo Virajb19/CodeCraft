@@ -98,7 +98,7 @@ export default function CreateRoomButton() {
        </DialogTrigger>
        <DialogContent>
           <DialogHeader>
-              <DialogTitle className='text-xl'>Create or join a Room</DialogTitle>
+              <DialogTitle className='text-xl uppercase'>Create or join a Room</DialogTitle>
           </DialogHeader>
              <Form {...createForm}>
                 <form className='space-y-3' onSubmit={createForm.handleSubmit(handleCreateRoom)}>

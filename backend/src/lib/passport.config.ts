@@ -4,6 +4,15 @@ import passport from 'passport'
 import dotenv from 'dotenv'
 import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-google-oauth20';
 import { OauthProvider } from '@prisma/client'
+import 'express'
+
+declare global {
+   namespace Express {
+     interface User {
+        isPro: boolean
+     }
+   }
+}
 
 dotenv.config()
 
@@ -27,10 +36,10 @@ passport.use(new GoogleStrategy({
         const user = await db.user.findFirst({where: {OauthId: profile.id}})
         if(user) {
           await db.user.update({where: {id: user.id}, data: {lastLogin: new Date()}})
-          return done(null, {id: user.id, email: user.email, name: user.username, image: user.ProfilePicture ?? ''})
+          return done(null, {id: user.id, email: user.email, name: user.username, image: user.ProfilePicture ?? '', isPro: user.isPro})
         } else {
           const user = await db.user.create({data: {username: profile.displayName, email: profile.emails?.[0]?.value ?? '',ProfilePicture: profile.photos?.[0]?.value || null, OauthProvider: profile.provider.toUpperCase() as OauthProvider, OauthId: profile.id}})
-          return done(null, {id: user.id, email: user.email, name: user.username, image: user.ProfilePicture ?? ''})
+          return done(null, {id: user.id, email: user.email, name: user.username, image: user.ProfilePicture ?? '', isPro: user.isPro})
         }
       } catch(err) {
          console.error(err)
@@ -52,11 +61,11 @@ async (accessToken: string, refreshToken: string, profile: Profile, done: (error
       const user = await db.user.findFirst({where: {OauthId: profile.id}})
       if(user) {
         await db.user.update({where: {id: user.id}, data: {lastLogin: new Date()}})
-        return done(null, {id: user.id, email: user.email, name: user.username, image: user.ProfilePicture})
+        return done(null, {id: user.id, email: user.email, name: user.username, image: user.ProfilePicture, isPro: user.isPro})
       }
       else {
        const user = await db.user.create({data: {username: profile.username ?? '', email: profile.emails?.[0]?.value || '',lastLogin: new Date(), ProfilePicture: profile.photos?.[0]?.value || null, OauthProvider: provider, OauthId: profile.id}})
-       return done(null, { id: user.id, email: user.email, name: user.username, image: user.ProfilePicture})
+       return done(null, { id: user.id, email: user.email, name: user.username, image: user.ProfilePicture, isPro: user.isPro})
       }
    } catch(err) {
        console.error(err)

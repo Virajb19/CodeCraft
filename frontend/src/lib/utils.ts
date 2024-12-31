@@ -8,6 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const BACKEND_URL = "http://localhost:3000"
 
+export const CHECKOUT_URL = "https://viraj.lemonsqueezy.com/buy/5dd8c3fd-7f6d-4044-a789-55ecd6c45b6c"
+
 export default axios.create({baseURL: BACKEND_URL})
 
 export const ACTIONS = {

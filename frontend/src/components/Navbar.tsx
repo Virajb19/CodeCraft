@@ -6,15 +6,19 @@ import RunButton from './run-button';
 import { Link } from 'react-router-dom'
 import UserAccountNav from './UserAccountNav';
 import CreateRoomButton from './CreateRoomButton';
+import ProButton from './ProButton';
+import { useAuth } from '@/lib/useAuth';
+import LanguageSelector from './LanguageSelector';
 
 export default function Navbar() {
 
-  const { setLanguage } = useCodeEditorStore()
+  const { user } = useAuth()
+  const isPro = user?.isPro
 
   return <nav className="fixed inset-x-0 top-0 flex gap-3 items-center justify-between backdrop-blur-md z-40 p-4 bg-[#0a0a0f]/80 border-b border-gray-600">
        <div className='flex items-center gap-3'>
        <div className='flex gap-3 items-center group'>
-          <span>
+          <span className='bg-gradient-to-br from-[#1a1a2e] to-[#0a0a0f] p-2 rounded-xl ring-2   ring-white/10 group-hover:ring-white/20 transition-all'>
               <Blocks className='size-10 text-blue-400 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500'/>
           </span>
           <div className="flex flex-col">
@@ -39,7 +43,7 @@ export default function Navbar() {
               <span
                 className="text-lg font-medium group-hover:text-white
                  transition-colors"
-              >
+            >
                 Snippets
               </span>
             </Link>
@@ -49,7 +53,8 @@ export default function Navbar() {
       </div>
           
           <div className='flex items-center gap-2'>
-            <Select onValueChange={val => setLanguage(val)}>
+          <ThemeSelector />
+            {/* <Select onValueChange={val => setLanguage(val)}>
                     <SelectTrigger className='w-[200px] outline-none'>
                         <SelectValue placeholder='Select a language'/>
                     </SelectTrigger>
@@ -60,9 +65,9 @@ export default function Navbar() {
                       </SelectItem>
                     })}
                     </SelectContent>
-                </Select>
-              <ThemeSelector />
-              <RunButton />
+                </Select> */}
+                <LanguageSelector />
+                {!isPro && <ProButton />}
                <div className='w-[2px] h-12 bg-gray-700 mx-2'/>
               <UserAccountNav />
           </div>

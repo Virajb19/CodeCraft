@@ -66,10 +66,11 @@ export default function SnippetCard({snippet} : {snippet: Snippet}) {
                               e.stopPropagation()
                               await deleteSnippet(snippet.id)
                               queryClient.refetchQueries({ queryKey: ['getSnippets']})
+                              queryClient.refetchQueries({ queryKey: ['getStarredSnippets']})
                             }}
                             className='disabled:bg-red-500/20 disabled:text-red-400 disabled:cursor-not-allowed bg-gray-500/10 text-gray-400 hover:bg-red-500/10 hover:text-red-400 px-3 py-1.5 rounded-lg duration-200 transition-all'>
                             {isPending ? (
-                              <div className="size-3.5 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
+                              <div className="size-5 border-2 border-red-400/30 border-t-red-400 rounded-full animate-spin" />
                             ) : (
                               <Trash2 className="size-5" /> 
                             )}

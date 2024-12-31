@@ -10,6 +10,7 @@ import { BACKEND_URL } from '../lib/utils'
 export default function HomePage() {
 
     const { user, isLoading} = useAuth()
+    const isAuth = !!user
 
   return <div className="w-full min-h-screen flex-center bg-gradient-to-r from-blue-500/10 to-purple-500/10">
             <Card className='z-10'>
@@ -18,20 +19,18 @@ export default function HomePage() {
                 </CardHeader>
                   <CardContent>
                      {isLoading ? <Skeleton className='h-14'/> : (
-                             user ? <Link to={'/editor'} className='group w-full flex-center gap-3 text-lg p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
+                             isAuth ? <Link to={'/editor'} className='group w-full flex-center gap-3 text-lg p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
 						               focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg'>
                                 Go to Editor <ArrowRight className='group-hover:translate-x-3 duration-200'/>
                              </Link>
                              : (
                                <div className='flex flex-col gap-2'>
 
-                                 <button onClick={() => {
-                                    window.open(`${BACKEND_URL}/api/auth/github`, "_self")
-                                    }} className='w-full flex-center gap-3 p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
+                                 <Link target='_self' to={`${BACKEND_URL}/api/auth/github`} className='w-full flex-center gap-3 p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
 						                   focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg text-lg'>
                                        <FaGithub className='size-7'/>
                                        Login with Github
-                               </button>
+                               </Link>
 
                                     <button onClick={() => {
                                         window.open(`${BACKEND_URL}/api/auth/google/callback`, "_self")

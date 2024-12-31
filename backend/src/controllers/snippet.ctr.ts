@@ -128,7 +128,7 @@ export async function getStarredSnippets(req: Request, res: Response) {
           return
         } 
 
-        const snippets = await db.snippet.findMany({where: {userId, stars: {some: {userId}}}, include: {stars: true}})
+        const snippets = await db.snippet.findMany({where: {userId, stars: {some: {userId}}}, include: {stars: { orderBy: {createdAt: 'desc'}}}})
 
         res.status(200).json({starredSnippets: snippets})
 

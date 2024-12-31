@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from '../lib/utils'
 
-type User = { id: number, email: string, name: string, image: string | null} | null
+type User = { id: number, email: string, name: string, image: string | null, isPro: boolean} | null
 
 export const useAuth = () => {
 

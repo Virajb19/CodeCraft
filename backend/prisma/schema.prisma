@@ -30,6 +30,8 @@ model User {
   codeExecutions CodeExecution[]
   stars Star[]
 
+  isPro Boolean @default(false)
+
   ownedRooms Room[] @relation("RoomOwner")
   participatingRooms Room[] @relation("RoomParticipants")
 
