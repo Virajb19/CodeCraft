@@ -24,12 +24,13 @@ export default function SnippetsPage() {
     const [searchQuery, setSearchQuery] = useState('')
     const [view, setView] = useState<'grid' | 'list'>('grid')
 
-    const {data: snippets, isLoading, isError} = useQuery<Snippet[]>({
+    const {data: snippets, isFetching, isError} = useQuery<Snippet[]>({
         queryKey: ['getSnippets'],
         queryFn: async () => {
             try {
                 const { data: { snippets }} = await axios.get('/api/snippet/getSnippets', { withCredentials: true})
                 // throw new Error('error')
+                // await new Promise(r => setTimeout(r, 8000))
                 return snippets
             } catch(err) {
                  console.error(err)
@@ -122,7 +123,7 @@ export default function SnippetsPage() {
              <motion.div layout id="snippets" 
               className={twMerge("grid gap-4 p-2 min-h-44", view === 'grid' ? 'grid-cols-3 w-3/4' : 'grid-cols-1 w-1/2')}>
               <AnimatePresence mode="popLayout">
-                {isLoading ? (
+                {isFetching ? (
                     <>
                      {Array.from({ length: 6}).map((_,i) => {
                         return <Skeleton key={i} className="h-52"/>

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query"
-import axios from "../lib/utils"
+import axios, { Comment } from "../lib/utils"
 import { useNavigate, useParams } from "react-router-dom"
 import SnippetCard from "@/components/SnippetCard";
 import { Editor } from "@monaco-editor/react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../constants";
 import { Code } from 'lucide-react'
 import CopyButton from "@/components/CopyButton";
-
+import Comments from "@/components/Comments";
 
 type Snippet = {
   id: string;
@@ -15,6 +15,7 @@ type Snippet = {
   language: string;
   code: string;
   userId: number;
+  comments: Comment[]
 } | null
 
 export default function Snippet() {
@@ -22,11 +23,12 @@ export default function Snippet() {
     const { id } = useParams()
     const navigate = useNavigate()
 
-    const {data: snippet} = useQuery<Snippet>({
+    const {data: snippet, isLoading} = useQuery<Snippet>({
       queryKey: ['getSnippet', id],
       queryFn: async () => {
          try {
             const { data: { snippet } } = await axios.get(`/api/snippet/getSnippet/${id}`, { withCredentials: true})
+            // await new Promise(r => setTimeout(r, 7000)),
             return snippet
          } catch(err) {
            console.error(err)
@@ -70,5 +72,6 @@ export default function Snippet() {
               }}
             />
          </div>
+         <Comments snippetId={snippet.id} snippetUserId={snippet.userId}/>
   </div>
 }

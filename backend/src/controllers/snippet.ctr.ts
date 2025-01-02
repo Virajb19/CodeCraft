@@ -49,7 +49,7 @@ export async function getSnippet(req: Request, res: Response) {
 
         const { id } = req.params
 
-        const snippet = await db.snippet.findUnique({ where: {id}})
+        const snippet = await db.snippet.findUnique({ where: {id}, include: {comments: { orderBy: { createdAt: 'asc'}, include: {author: { select: { ProfilePicture: true}}}}}})
         
         res.status(200).json({snippet})
 
@@ -175,4 +175,17 @@ export async function isStarred(req: Request, res: Response) {
         console.error(err)
         res.status(500).json({msg: 'Internal server error'})
     }
+}
+
+export async function getComments(req: Request, res: Response) {
+     try {
+        const { id } = req.params
+
+        const comments = await db.comment.findMany({ where: {snippetId: id}, orderBy: { createdAt: 'asc'}, include: {author: { select: {ProfilePicture: true, username: true}}}})
+
+        res.status(200).json({comments})
+     } catch(err) {
+        console.error(err)
+        res.status(500).json({msg: 'Internal server error'})
+     }
 }

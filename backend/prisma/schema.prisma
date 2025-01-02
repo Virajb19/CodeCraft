@@ -35,6 +35,8 @@ model User {
   ownedRooms Room[] @relation("RoomOwner")
   participatingRooms Room[] @relation("RoomParticipants")
 
+  comments Comment[]
+
   // userRooms UserToRoom[]
 }
 
@@ -76,6 +78,7 @@ model Snippet {
   user User @relation(fields: [userId],references: [id], onDelete: Cascade)
 
   stars Star[]
+  comments Comment[]
 }
 
 model CodeExecution {
@@ -102,6 +105,21 @@ model Star {
   snippet    Snippet  @relation(fields: [snippetId], references: [id], onDelete: Cascade)
 
   @@unique([userId,snippetId])
+}
+
+model Comment {
+   id String @id @default(cuid())
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+
+   content String 
+
+   userId Int
+   author User @relation(fields: [userId], references: [id])
+
+   snippetId String
+   snippet Snippet @relation(fields: [snippetId], references: [id])
+   
 }
 
 

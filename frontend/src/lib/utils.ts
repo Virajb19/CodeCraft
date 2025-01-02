@@ -38,7 +38,8 @@ export type Snippet = {
   title: string;
   language: string;
   code: string;
-}
+  comments: Comment[]
+} | null
 
 export type Room = {
   id: string;
@@ -48,4 +49,17 @@ export type Room = {
   ownerId: number;
   owner: { username: string,  ProfilePicture: string | null}
   participants:  {id: number, username: string,  ProfilePicture: string | null} []
+}
+
+export type Comment = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: number;
+  snippetId: string;
+  content: string;
+  author: {
+    ProfilePicture: string | null;
+    username: string
+  }
 }

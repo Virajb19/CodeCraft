@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../lib/db'
-import { createRoomSchema } from '../lib/zod';
+import { createCommentSchema, createRoomSchema } from '../lib/zod';
 
  export async function getProfile(req: Request, res: Response) {
     console.log('profile')
@@ -120,4 +120,42 @@ export async function leaveRoom(req: Request, res: Response) {
       console.error(err)
       res.status(500).json({msg: 'Internal server error'})
     }
+}
+
+export async function createComment(req: Request, res: Response) {
+     try {
+         const userId = req.user?.id
+         if(!userId) {
+            res.status(401).json({msg: 'Not authorized'})
+            return
+         } 
+
+         const parsedData = createCommentSchema.safeParse(req.body)
+         if(!parsedData.success) {
+             res.status(400).json({msg: 'Invalid input', errors: parsedData.error.flatten().fieldErrors})
+             return
+         }
+
+         const { content } = parsedData.data
+
+         const { id } = req.params
+         const snippet = await db.snippet.findUnique({where: {id}, select: { userId: true}})
+         if(!snippet) {
+            res.status(404).json({msg: 'snippet not found'})
+            return
+         }
+
+         if(snippet.userId === userId) {
+            res.status(403).json({msg: 'You cannot post a comment on your own snippet!'})
+            return
+         }
+
+         const comment = await db.comment.create({data: {content,userId,snippetId: id}})
+
+         res.status(201).json({msg: 'Comment posted!!', commentId: comment.id})
+         
+     } catch(err) {
+         console.error(err)
+         res.status(500).json({msg: 'Internal server error'})
+     }
 }
