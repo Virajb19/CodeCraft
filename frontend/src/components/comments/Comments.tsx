@@ -9,6 +9,7 @@ import { motion } from 'framer-motion'
 import CommentContent from "./CommentContent";
 import { useAuth } from "@/lib/useAuth";
 import DeleteButton from "./DeleteButton";
+import { toast } from 'sonner'
 
 export default function Comments({snippetId, snippetUserId}: {snippetId: string, snippetUserId: number}) {
 
@@ -22,7 +23,7 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
     queryFn: async () => {
       try {
         const { data: { comments}} = await axios.get(`/api/snippet/get/comments/${snippetId}`, { withCredentials: true})
-        return comments
+        return comments 
       } catch(err) {
          console.error(err)
          throw new Error('Error fetching comments')
@@ -49,7 +50,7 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
   //   }
   // })
 
-  // toast.success(user?.id + ' ' + snippetUserId )
+  // toast.success(comments && comments[0].author.ProfilePicture)
 
   // if(isFetching || comments === undefined) return <div>
 
@@ -121,7 +122,7 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                           })}
                         </div>
 
-                       {comment.userId === user?.id && <DeleteButton commentId={comment.id}/>}
+                       {comment.userId === user?.id && <DeleteButton commentId={comment.id} snippetId={snippetId}/>}
                    </motion.div>
                 })}
               </>

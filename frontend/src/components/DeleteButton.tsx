@@ -18,6 +18,7 @@ export default function DeleteButton({executionId}: { executionId: string}) {
       },
       onSuccess: () => {
          toast.success('CodeExecution deleted successfully')
+         // WE CAN REFETCH HERE TOO
       },
       onError: (err) => {
          console.error(err)

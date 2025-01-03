@@ -60,7 +60,7 @@ export default function CommentForm({snippetId}: {snippetId: string}) {
   
             //  toast.success(start + ' ' + end, { icon: <CheckCheck className="text-green-400 size-5"/>})
   
-            form.setValue('content', form.getValues('content').substring(0,start) + ' ' + form.getValues('content').substring(0,end))
+            // form.setValue('content', form.getValues('content').substring(0,start) + ' ' + form.getValues('content').substring(0,end))
             e.currentTarget.selectionStart = e.currentTarget.selectionEnd = start + 2
           }
       }
