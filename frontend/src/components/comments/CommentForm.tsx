@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from './ui/form'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
+import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel } from '../ui/form'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { Code, SendIcon, CheckCheck, CheckCircle} from 'lucide-react'
 import { z } from 'zod' 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { twMerge } from 'tailwind-merge'
-import axios from '../lib/utils'
+import axios from '../../lib/utils'
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from 'react'

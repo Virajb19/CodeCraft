@@ -159,3 +159,33 @@ export async function createComment(req: Request, res: Response) {
          res.status(500).json({msg: 'Internal server error'})
      }
 }
+
+export async function deleteComment(req: Request, res: Response) {
+   try {
+      const userId = req.user?.id
+      if(!userId) {
+         res.status(401).json({msg: 'Not authorized'})
+         return
+      } 
+
+      const { id } = req.params
+      const comment = await db.comment.findUnique({ where: { id }, select: { userId: true}})
+      if(!comment) {
+         res.status(404).json({msg: 'comment not found!!'})
+         return
+      }
+
+      if(comment.userId !== userId) {
+         res.status(403).json({msg: 'You are not authorized to delete this comment'})
+         return
+      }
+
+      await db.comment.delete({where: { id }})
+
+      res.status(204).json({msg: 'comment deleted!'})
+
+   } catch(err) {
+      console.error(err)
+      res.status(500).json({msg: 'Internal server error'})
+   }
+}

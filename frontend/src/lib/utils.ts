@@ -39,7 +39,7 @@ export type Snippet = {
   language: string;
   code: string;
   comments: Comment[]
-} | null
+}
 
 export type Room = {
   id: string;

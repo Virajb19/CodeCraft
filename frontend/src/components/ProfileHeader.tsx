@@ -67,7 +67,9 @@ export default function ProfileHeader({userStats}: Props) {
                 <div className="relative group flex-center p-2">
                   <div className="absolute inset-0 bg-gradient-to-r size-36 from-blue-500 to-purple-600 rounded-full blur-xl opacity-100 group-hover:opacity-100 transition-opacity"/>
                   <img src={user?.image || ''} className="object-contain rounded-full size-32 border-4 hover:border z-10 border-gray-800/50 group-hover:scale-105 transition-transform"/>
-                  <span className="absolute top-3 right-2 z-20 rounded-full shadow-lg shadow-white animate-pulse p-2 bg-gradient-to-r from-purple-500 to-purple-600"><Zap className="size-5"/></span>
+                  {user?.isPro && (
+                     <span className="absolute top-3 right-2 z-20 rounded-full shadow-lg shadow-white animate-pulse p-2 bg-gradient-to-r from-purple-500 to-purple-600"><Zap className="size-5"/></span>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-1">

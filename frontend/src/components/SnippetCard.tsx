@@ -7,16 +7,8 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useAuth } from '@/lib/useAuth';
 import StarButton from './StarButton';
+import { Snippet } from '../lib/utils'
 
-type Snippet = {
-    id: string;
-    createdAt: Date;
-    title: string;
-    language: string;
-    code: string;
-    userId: number;
-  }
-  
 export default function SnippetCard({snippet} : {snippet: Snippet}) {
 
   const { user } = useAuth()

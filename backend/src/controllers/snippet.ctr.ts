@@ -50,7 +50,10 @@ export async function getSnippet(req: Request, res: Response) {
         const { id } = req.params
 
         const snippet = await db.snippet.findUnique({ where: {id}, include: {comments: { orderBy: { createdAt: 'asc'}, include: {author: { select: { ProfilePicture: true}}}}}})
-        
+        if(!snippet) {
+            res.status(404).json({msg: 'Snippet not found'})
+            return
+        } 
         res.status(200).json({snippet})
 
     } catch(err) {

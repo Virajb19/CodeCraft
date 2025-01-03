@@ -6,7 +6,7 @@ import { Editor } from "@monaco-editor/react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "../constants";
 import { Code } from 'lucide-react'
 import CopyButton from "@/components/CopyButton";
-import Comments from "@/components/Comments";
+import Comments from "@/components/comments/Comments";
 
 type Snippet = {
   id: string;

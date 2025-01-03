@@ -13,7 +13,7 @@ export default function DeleteButton({executionId}: { executionId: string}) {
       mutationKey: ['deleteSnippet'],
       mutationFn: async (id: string) => {
          const { data: { msg } } = await axios.delete(`/api/codeExecution/delete/${id}`, { withCredentials: true}) 
-        //  await new Promise(r => setTimeout(r, 5000))
+         // await new Promise(r => setTimeout(r, 5000))
          return msg
       },
       onSuccess: () => {

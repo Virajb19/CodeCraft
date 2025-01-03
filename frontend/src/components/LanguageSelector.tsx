@@ -63,7 +63,7 @@ export default function LanguageSelector() {
 
                          const isLocked = !user?.isPro && (lang.id !== 'javascript')
 
-                         return <motion.button disabled={isLocked} onClick={() => handleLanguageSelect(lang.id)} key={lang.id} initial={{y: -2, opacity: 0 }} animate={{y: 0, opacity: 1 }}  transition={{ duration: 0.2, delay: i * 0.1 }}
+                         return <motion.button disabled={isLocked} onClick={() => handleLanguageSelect(lang.id)} key={lang.id} initial={{opacity: 0 }} animate={{opacity: 1 }}  transition={{ delay: i * 0.1 }}
                          className={twMerge('flex relative group items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-70',
                             language === lang.id ? 'bg-blue-500/10 text-blue-400' : 'text-gray-300'
                          )}>

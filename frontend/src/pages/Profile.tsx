@@ -209,7 +209,7 @@ export default function Profile() {
                          ) : (
                           <div className="grid grid-cols-2 gap-3">
                             {starredSnippets?.map(snippet => {
-                              return <div key={snippet.id} className="relative group">
+                              return <div key={snippet?.id} className="relative group">
                                       <SnippetCard snippet={snippet}/>
                               </div>
                             })}

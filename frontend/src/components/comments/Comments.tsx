@@ -4,11 +4,11 @@ import { useRef, useState, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 import CommentForm from "./CommentForm";
 import { useQuery } from "@tanstack/react-query";
-import axios from '../lib/utils'
+import axios from '../../lib/utils'
 import { motion } from 'framer-motion'
 import CommentContent from "./CommentContent";
 import { useAuth } from "@/lib/useAuth";
-import { toast } from "sonner";
+import DeleteButton from "./DeleteButton";
 
 export default function Comments({snippetId, snippetUserId}: {snippetId: string, snippetUserId: number}) {
 
@@ -27,8 +27,27 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
          console.error(err)
          throw new Error('Error fetching comments')
       }
-    },   
+    }, 
+    refetchInterval: 1000 * 60 * 7  
   })
+
+  // const [commentId, setCommentId] = useState('')
+
+  // const {mutateAsync: deleteComment, isPending} = useMutation({
+  //   mutationFn: async (commentId: string) => {
+  //      const res = await axios.delete(`/api/user/delete/comment/${commentId}`, { withCredentials: true})
+  //      await new Promise(r => setTimeout(r, 7000))
+  //      return res.data
+  //   },
+  //   onMutate: (commentId) => setCommentId(commentId),
+  //   onSettled: () => setCommentId(''),
+  //   onSuccess: () => toast.success('Deleted'),
+  //   onError: (err) => {
+  //       console.error(err)
+  //       if(err instanceof AxiosError) toast.error(err.response?.data.msg || 'Error deleting comment') 
+  //       else toast.error('Something went wrong')
+  //   }
+  // })
 
   // toast.success(user?.id + ' ' + snippetUserId )
 
@@ -37,7 +56,7 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
   // </div>
 
   if(isError) return <div className="border border-[#ffffff0a] text-lg bg-[#121218] rounded-xl h-40 flex-center text-red-600"> 
-        Failed to load comments. Please try again later.
+        Failed to load comments. Refresh!!!.
   </div>
 
   // if(comments?.length === 0) return <div></div>
@@ -79,7 +98,7 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                   const name = comment.author.username
 
                    return <motion.div initial={{y: -4, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'backOut', delay: 0.05 * i}}
-                       key={comment.id} className="flex flex-col gap-2 p-4 rounded-lg bg-[#0a0a0f] border border-[#ffffff0a] hover:border-[#ffffff14] transition-all">
+                       key={comment.id} className="relative group flex flex-col gap-2 p-4 rounded-lg bg-[#0a0a0f] border border-[#ffffff0a] hover:border-[#ffffff14] transition-all">
                         <div className="flex gap-2">
                           {picture ? (
                             <img src={picture} width={40} height={40} className="object-contain rounded-full"/>
@@ -101,6 +120,8 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                              return <p key={i} className="text-sm">{line}</p>
                           })}
                         </div>
+
+                       {comment.userId === user?.id && <DeleteButton commentId={comment.id}/>}
                    </motion.div>
                 })}
               </>
