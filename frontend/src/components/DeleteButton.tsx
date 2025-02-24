@@ -12,25 +12,27 @@ export default function DeleteButton({executionId}: { executionId: string}) {
     const {mutateAsync: deleteExecution, isPending} = useMutation({
       mutationKey: ['deleteSnippet'],
       mutationFn: async (id: string) => {
-         const { data: { msg } } = await axios.delete(`/api/codeExecution/delete/${id}`, { withCredentials: true}) 
          // await new Promise(r => setTimeout(r, 5000))
+         const { data: { msg } } = await axios.delete(`/api/codeExecution/delete/${id}`, { withCredentials: true}) 
          return msg
       },
       onSuccess: () => {
          toast.success('CodeExecution deleted successfully')
-         // WE CAN REFETCH HERE TOO
       },
       onError: (err) => {
          console.error(err)
          if(err instanceof AxiosError) {
           toast.error(err.response?.data.msg || 'Failed to delete execution!')
          }
+      },
+      onSettled: () => {
+         queryClient.refetchQueries({queryKey: ['getExecutions']})
       }
     })
 
   return <button onClick={async () => {
        await deleteExecution(executionId)
-       queryClient.refetchQueries({queryKey: ['getExecutions']})
+      //  queryClient.refetchQueries({queryKey: ['getExecutions']})
   }} disabled={isPending} 
   className="disabled:bg-red-500/20 disabled:text-red-400 disabled:cursor-not-allowed absolute top-4 right-5 bg-gray-500/10 text-gray-400 hover:bg-red-500/10 hover:text-red-400 px-3 py-1.5 rounded-lg duration-200 transition-all">
         {isPending ? (

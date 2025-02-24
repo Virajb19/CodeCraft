@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
+import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import EditorPage from './pages/editor-page'
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'sonner'
@@ -12,13 +12,19 @@ import Profile from './pages/Profile';
 import { BackgroundBeams } from './components/ui/background-beams';
 import RoomPage from './pages/RoomPage';
 import { Loader } from 'lucide-react';
+import { useMediaQuery } from 'usehooks-ts'
+import DesktopOnly from './pages/DesktopOnly';
 
-function App() {
+export default function App() {
 
     const { user, isLoading } = useAuth()
     const isAuth = !!user
 
     const { pathname } = useLocation()
+    const isSmallScreen = useMediaQuery('(max-width: 1280px)')
+    const navigate = useNavigate()
+
+    if(isSmallScreen) navigate('/desktop-only')
 
     if(isLoading && pathname != '/') return <div className='w-full min-h-screen flex-center'>
        <Loader className='size-20 animate-spin text-blue-600'/>
@@ -37,11 +43,10 @@ function App() {
               <Route path='/snippet/:id' element={isAuth ? <Snippet /> : <Navigate to={'/'}/>}/>
               <Route path='/profile' element={isAuth ? <Profile /> : <Navigate to={'/'}/>}/>
               <Route path='/room/:id' element={isAuth ? <RoomPage /> : <Navigate to={'/'}/>}/>
+              <Route path='/desktop-only' element={isSmallScreen ? <DesktopOnly /> : <Navigate to={'/'}/>}/>
               <Route path='*' element={<NotFound />} />
           </Routes>
       </div>
   )
 }
-
-export default App
  

@@ -25,8 +25,8 @@ export default function SaveButton() {
 
     const {mutateAsync: createSnippet} = useMutation({
      mutationFn: async (data: { title: string, language: string, code: string}) => {
+        // await new Promise(r => setTimeout(r, 5000))
           const res = await axios.post('/api/snippet/create', data, { withCredentials: true}) 
-          // await new Promise(r => setTimeout(r, 5000))
           setOpen(false)
           return res.data
      },

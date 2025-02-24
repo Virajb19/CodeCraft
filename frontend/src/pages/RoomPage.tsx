@@ -63,62 +63,62 @@ export default function RoomPage() {
 
     // if(isLoading) return <p>Loading...</p>
 
-    const socketRef = useRef<Socket | null>(null) 
+    // const socketRef = useRef<Socket | null>(null) 
     const [socket, setSocket] = useState<Socket | null>(null)
 
-    useEffect(() => {
-      if(!room || !user) return
+    // useEffect(() => {
+    //   if(!room || !user) return
  
-      const isParticipant = room.participants.some(p => p.id === user.id)
-      const isOwner = room.ownerId === user.id
+    //   const isParticipant = room.participants.some(p => p.id === user.id)
+    //   const isOwner = room.ownerId === user.id
 
-      if(!isParticipant && !isOwner) {
-        toast.error('Join the room first!!!', { position: 'top-center'})
-        navigate('/editor')
-        return
-      }
+    //   if(!isParticipant && !isOwner) {
+    //     toast.error('Join the room first!!!', { position: 'top-center'})
+    //     navigate('/editor')
+    //     return
+    //   }
 
-    }, [room, user])
+    // }, [room, user])
 
-    useEffect(() => {
+   // useEffect(() => {
 
-       const init = async () => {
-           socketRef.current = await initSocket()
-           setSocket(socketRef.current)
-           socketRef.current.on("connect_error", (err) => handleErrors(err));
-           socketRef.current.on("connect_failed", (err) => handleErrors(err));
+    //    const init = async () => {
+    //        socketRef.current = await initSocket()
+    //        setSocket(socketRef.current)
+    //        socketRef.current.on("connect_error", (err) => handleErrors(err));
+    //        socketRef.current.on("connect_failed", (err) => handleErrors(err));
 
-            const handleErrors = (err: Error) => {
-                console.log("Error", err)
-                toast.error("Socket connection failed, Try again later");
-                navigate("/editor");
-            }
-           socketRef.current.emit('join', {roomId: room?.id, username: user?.name, userId: user?.id})
+    //         const handleErrors = (err: Error) => {
+    //             console.log("Error", err)
+    //             toast.error("Socket connection failed, Try again later");
+    //             navigate("/editor");
+    //         }
+    //        socketRef.current.emit('join', {roomId: room?.id, username: user?.name, userId: user?.id})
 
-           socketRef.current.on('joined', ({username, userId}) => {
-               if(userId !== user?.id) {
-                 toast.info(`${username} joined the room`, { position: 'top-center', duration: 5000, closeButton: true,})
-                 queryClient.refetchQueries({ queryKey: ['getRoom']})
-               } 
-           })
+    //        socketRef.current.on('joined', ({username, userId}) => {
+    //            if(userId !== user?.id) {
+    //              toast.info(`${username} joined the room`, { position: 'top-center', duration: 5000, closeButton: true,})
+    //              queryClient.refetchQueries({ queryKey: ['getRoom']})
+    //            } 
+    //        })
 
-           socketRef.current.on('disconnected', ({username, userId}) => {
-             if(userId !== user?.id) {
-               toast.info(`${username} left the room`)
-               queryClient.refetchQueries({ queryKey: ['getRoom']})
-             }
-           })
-       } 
-       init()
+    //        socketRef.current.on('disconnected', ({username, userId}) => {
+    //          if(userId !== user?.id) {
+    //            toast.info(`${username} left the room`)
+    //            queryClient.refetchQueries({ queryKey: ['getRoom']})
+    //          }
+    //        })
+    //    } 
+    //    init()
 
-       return () => {
-         if(socketRef.current) {
-          socketRef.current.disconnect()
-          socketRef.current.off('joined')
-          socketRef.current.off('disconnected')
-          }
-       }
-    }, [])
+    //    return () => {
+    //      if(socketRef.current) {
+    //       socketRef.current.disconnect()
+    //       socketRef.current.off('joined')
+    //       socketRef.current.off('disconnected')
+    //       }
+    //    }
+    // }, [])
 
     const listRef = useRef<HTMLUListElement | null>(null)
 

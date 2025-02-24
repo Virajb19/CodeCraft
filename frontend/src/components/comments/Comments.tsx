@@ -10,10 +10,11 @@ import CommentContent from "./CommentContent";
 import { useAuth } from "@/lib/useAuth";
 import DeleteButton from "./DeleteButton";
 import { toast } from 'sonner'
+import EditComment from "./EditComment";
 
 export default function Comments({snippetId, snippetUserId}: {snippetId: string, snippetUserId: number}) {
 
-  const [isPreview, setIsPreview] = useState(false)
+  // const [isPreview, setIsPreview] = useState(false)
   const commentsRef = useRef<HTMLDivElement>(null)
 
   const { user } = useAuth()
@@ -78,10 +79,10 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                     <MessageSquare className="size-5"/>
                     Comments ({comments?.length})
                 </div>   
-                <button onClick={() => setIsPreview(!isPreview)}
+                {/* <button onClick={() => setIsPreview(!isPreview)}
                  className={twMerge('text-base border px-3 py-1.5 rounded-md transition-colors', isPreview ? 'bg-blue-500/10 text-blue-400' : 'hover:bg-[#ffffff08] text-gray-400')}>
                     {isPreview ? 'Edit' : 'Preview'}
-                </button>       
+                </button>        */}
             </div>
 
             {snippetUserId !== user?.id && <CommentForm snippetId={snippetId}/>}
@@ -98,8 +99,10 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                   const picture = comment.author.ProfilePicture
                   const name = comment.author.username
 
+                  // toast.success(picture)
+
                    return <motion.div initial={{y: -4, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'backOut', delay: 0.05 * i}}
-                       key={comment.id} className="relative group flex flex-col gap-2 p-4 rounded-lg bg-[#0a0a0f] border border-[#ffffff0a] hover:border-[#ffffff14] transition-all">
+                       key={comment.id} className="relative group flex flex-col gap-2 p-4 rounded-lg bg-[#0a0a0f] border border-[#ffffff0a] hover:border-gray-700 duration-200 transition-all">
                         <div className="flex gap-2">
                           {picture ? (
                             <img src={picture} width={40} height={40} className="object-contain rounded-full"/>
@@ -122,7 +125,12 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                           })}
                         </div>
 
-                       {comment.userId === user?.id && <DeleteButton commentId={comment.id} snippetId={snippetId}/>}
+                       {comment.userId === user?.id && (
+                        <div className="flex items-center gap-2 absolute top-3 right-5">
+                             <EditComment comment={comment} snippetId={snippetId}/>
+                             <DeleteButton commentId={comment.id} snippetId={snippetId}/>
+                        </div>
+                       )}
                    </motion.div>
                 })}
               </>

@@ -9,7 +9,15 @@ import {
 import { ThemeProvider } from "@/components/theme-provider"
 import { BrowserRouter } from 'react-router-dom'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+   defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 5 * 60 * 1000,
+      refetchInterval: 5 * 60 * 1000
+    }
+   }
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

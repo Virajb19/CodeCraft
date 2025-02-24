@@ -43,7 +43,8 @@ export default function Snippet() {
       return null
     }
 
-  return <div className="w-3/4 mx-auto min-h-screen flex flex-col gap-4 p-3">
+  return <div className="w-full min-h-screen">
+  <div className="w-3/4 mx-auto flex flex-col gap-4 p-3">
         <SnippetCard snippet={snippet}/>
          <div className="flex flex-col rounded-t-2xl border border-[#ffffff0a] bg-[#121218]">
             <div className="flex items-center justify-between p-3 border-b border-[#ffffff0a]">
@@ -73,5 +74,6 @@ export default function Snippet() {
             />
          </div>
          <Comments snippetId={snippet.id} snippetUserId={snippet.userId}/>
+  </div>
   </div>
 }

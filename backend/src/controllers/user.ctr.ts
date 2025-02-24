@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import db from '../lib/db'
 import { createCommentSchema, createRoomSchema } from '../lib/zod';
+import { z } from 'zod'
 
  export async function getProfile(req: Request, res: Response) {
     console.log('profile')
@@ -57,6 +58,11 @@ export async function joinRoom(req: Request, res: Response) {
        res.status(404).json({msg: 'Room not found!'})
        return
      }
+
+     if(room.ownerId === userId) {
+      res.status(403).json({msg: 'You are the owner of this room'})
+      return
+     }
      
       await db.room.update({where: {id}, data: { participants: {connect: { id: userId}}}})
 
@@ -108,7 +114,7 @@ export async function leaveRoom(req: Request, res: Response) {
        }
 
        if(room.ownerId === userId) {
-           await db.room.delete({ where: { id: room.id}})
+           await db.room.update({ where: { id: room.id}, data: { deletedAt: new Date()}})
            res.status(203).json({msg: 'Deleted room successfully'})
            return
          // await db.room.update({ where: { id }, data: { ownerId: room.participants[0].id}})
@@ -188,4 +194,41 @@ export async function deleteComment(req: Request, res: Response) {
       console.error(err)
       res.status(500).json({msg: 'Internal server error'})
    }
+}
+
+export async function editComment(req: Request, res: Response) {
+    try {
+      const userId = req.user?.id
+      if(!userId) {
+         res.status(401).json({msg: 'Not authorized'})
+         return
+      } 
+
+      const { id } = req.params
+      const comment = await db.comment.findUnique({ where: { id }, select: { id: true, userId: true}})
+      if(!comment) {
+         res.status(404).json({msg: 'comment not found!!'})
+         return
+      }
+
+      if(comment.userId !== userId) {
+         res.status(403).json({msg: 'You are not authorized to edit this comment'})
+         return
+      }
+
+      const parsedData = z.object({ newContent: z.string()}).safeParse(req.body)
+      if(!parsedData.success) {
+         res.status(400).json({msg: 'Invalid input', errors: parsedData.error.flatten().fieldErrors})
+         return
+      }
+      const { newContent } = parsedData.data
+
+      await db.comment.update({ where: { id: comment.id}, data: { content: newContent}})
+
+      res.status(200).json({msg: 'comment edited successfully'})
+
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({msg: 'Error editing comment'})
+    }
 }

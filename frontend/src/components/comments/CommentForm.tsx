@@ -65,6 +65,7 @@ export default function CommentForm({snippetId}: {snippetId: string}) {
           }
       }
   
+      form.watch()
 
   return  <div className="p-6 bg-[#0a0a0f] rounded-xl border-[#ffffff0a]">
             <Form {...form}>
@@ -106,7 +107,7 @@ export default function CommentForm({snippetId}: {snippetId: string}) {
                                 <p className="text-[#808086]/60 ml-6"> Tab key inserts spaces • Preview your comment before posting</p>
                         </div>
 
-                        <button disabled={form.formState.isSubmitting || isPosted} type="submit" 
+                        <button disabled={form.formState.isSubmitting || isPosted || form.watch('content') === ''} type="submit" 
                         className={twMerge("flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ml-auto disabled:opacity-70 disabled:cursor-not-allowed", 
                             isPosted ? 'bg-green-400/10' : 'bg-[#3b82f6] hover:bg-[#2563eb]'
                         )}>

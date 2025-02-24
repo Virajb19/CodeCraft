@@ -10,12 +10,11 @@ import { executionRouter } from './routes/code-execution.routes';
 import { snippetRouter } from './routes/snippet.routes';
 import http from 'http'
 import { Server } from 'socket.io'
-import crypto from 'crypto'
 
 dotenv.config();
 
 import './lib/passport.config'
-import { lemonSqueezyApiEndpoint } from './lib/axios';
+import { stripeRouter } from './routes/stripe.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -57,6 +56,8 @@ io.on('connection', socket => {
         socket.join(roomId)
 
         let participants = getUsersInRoom(roomId)
+
+        console.log(participants)
           
         socket.to(roomId).emit('joined', {
           participants,
@@ -95,7 +96,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }))
-app.use(express.json())
+app.use(express.json({ limit: '100mb'}))
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret', 
@@ -106,75 +107,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post('/api/webhook/lemonSqueezy',async (req: Request, res: Response) => {
-   try {
-      // const body = req.body
-      // if(!body.productId) {
-      //    res.status(400).json({msg: 'productId is required'})
-      //    return
-      // }
-
-      // const response = await lemonSqueezyApiEndpoint.post('/checkouts', {
-      //   data: {
-      //     type: "checkouts",
-      //     attributes: {
-      //      checkout_data: {
-      //         custom: {
-      //           userId: req.user?.id.toString()
-      //         }
-      //      }
-      //     },
-      //     relationships: {
-      //       store: {
-      //         data: {
-      //           type:"stores",
-      //           id: process.env.LEMON_SQUEEZY_STORE_ID
-      //         }
-      //       },
-      //       variant: {
-      //         data: {
-      //           type: "variants",
-      //           id: body.productId.toString()
-      //         }
-      //       }
-      //     }
-      //   }      
-      // })
-
-      // console.log(response.data)
-
-      // res.status(200).json({msg: 'success', data: response.data})
-
-      const eventType = req.headers['X-Event-Name']
-      const body = req.body
-
-      const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET as string
-      const hmac = crypto.createHmac("sha256", secret)
-      const digest = hmac.update(JSON.stringify(body)).digest('hex')
-
-      const signature = req.headers['X-Signature'] || ''
-
-      if(digest !== signature) {
-        res.status(400).json({ msg: 'Invalid signature' })
-        return
-      }
-
-      if(eventType === 'order_created') {
-         
-      }
-
-      console.log(eventType)
-
-   } catch(err) {
-     console.error(err)
-     res.status(500).json('Internal server error')
-   }
-})
-
 app.use('/api/auth/', authRouter)
 app.use('/api/user/', userRouter)
 app.use('/api/codeExecution', isAuthenticated, executionRouter)
 app.use('/api/snippet', isAuthenticated, snippetRouter)
+app.use('/api/stripe', isAuthenticated, stripeRouter)
 
 server.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);

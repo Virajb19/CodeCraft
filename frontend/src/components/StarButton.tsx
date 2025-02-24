@@ -72,7 +72,7 @@ export default function StarButton({snippetId} : {snippetId: string}) {
   return <button disabled={isPending} onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        toast.promise(starSnippet(), { loading: isStarred ? 'Removing...': 'Starring...'})
+        toast.promise(starSnippet(), { loading: isStarred ? 'Removing...': 'Starring...', error: 'Something went wrong!'})
   }} className={twMerge('flex items-center gap-2 px-3 py-1.5 rounded-lg disabled:cursor-not-allowed disabled:opacity-80', isStarred ? 'bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20' : 'bg-gray-500/10 text-gray-400 hover:bg-gray-500/20')}>
            <Star className={twMerge('size-5', isStarred ? "fill-yellow-500" : 'fill-none hover:fill-gray-400 hover: transition-colors duration-200')}/>
            <span className={twMerge('text-xs font-semibold', isStarred ? 'text-yellow-500' : 'text-gray-400')}>{starCount && (starCount< 100 ? starCount : '100+')}</span>

@@ -2,6 +2,9 @@ import { create } from 'zustand'
 import { editor } from 'monaco-editor';
 import { LANGUAGE_CONFIG } from '@/constants';
 import axios from 'axios';
+import type { Socket } from "socket.io-client";
+import { io } from 'socket.io-client'
+import { BACKEND_URL } from './utils'
 
 type selectedLang = {
     selectedLang: string,
@@ -33,23 +36,28 @@ type CodeEditorState = {
     runCode: () => Promise<void>;
   }
 
-// type userProfileState = {
-//   executions: Execution[];
-//   executionsInLast24hrs: number;
-//   starredSnippets: Snippet[];
-//   totalExecutions: number;
-//   languagesCount: number;
-//   languageStats: Record<string, number>;
-//   languages: string[];
-//   favoriteLanguage: string;
-//   mostStarredLanguage: string;
-//   starredLanguages: Record<string, number>;
-//   isLoading: boolean;
-// }
+type SocketStoreState = {
+  socket: Socket | null,
+  initSocket: () => void
+  connectSocket: () => void,
+  disconnectSocket: () => void
+}
 
-// export const useProfileStore = create<userProfileState>((set, get) => ({
- 
-// }))
+export const useSocketStore = create<SocketStoreState>((set, get) => ({
+     socket: null,
+     initSocket: () => {
+        const socket = io(BACKEND_URL, {
+          forceNew: true,
+          reconnectionAttempts: Infinity,
+          timeout: 10000,
+          transports: ['websocket']
+        })
+
+        set({socket})
+     },
+     connectSocket: () => {},
+     disconnectSocket: () => {}
+}))
 
 export const useLangStore = create<selectedLang>((set) => ({
     selectedLang: localStorage.getItem('lang') || 'Javascript',
@@ -97,7 +105,6 @@ export const useCodeEditorStore = create<CodeEditorState>((set, get) => ({
     runCode: async () => {
         const { language, getCode } = get()
         const code = getCode()
-        // alert(language)
         if (!code) {
             set({ error: "Please enter some code" })
             return;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Clock, Trash2, User } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -12,13 +12,14 @@ import { Snippet } from '../lib/utils'
 export default function SnippetCard({snippet} : {snippet: Snippet}) {
 
   const { user } = useAuth()
+  const { pathname } = useLocation()
 
   const queryClient = useQueryClient()
 
   const {mutateAsync: deleteSnippet, isPending} = useMutation({
     mutationKey: ['deleteSnippet'],
     mutationFn: async (id: string) => {
-       const { data: { msg } } = await axios.delete(`/api/snippet/delete/${id}`, { withCredentials: true}) 
+       const { data: { msg } } = await axios.delete(`/api/snippet/delete/${id}`, { withCredentials: true})  
        return msg
     },
     onSuccess: () => {
@@ -29,6 +30,10 @@ export default function SnippetCard({snippet} : {snippet: Snippet}) {
        if(err instanceof AxiosError) {
         toast.error(err.response?.data.msg || 'Failed to delete snippet!')
        }
+    },
+    onSettled: () => {
+      queryClient.refetchQueries({ queryKey: ['getSnippets']})
+      queryClient.refetchQueries({ queryKey: ['getStarredSnippets']})
     }
   })
 
@@ -43,7 +48,7 @@ export default function SnippetCard({snippet} : {snippet: Snippet}) {
                            <img src={`/${snippet.language.toLowerCase()}.png`} className='size-6 object-contain'/>
                       </div>
                       <div className='flex flex-col gap-1'>
-                           <span className='bg-blue-500/10 text-blue-400 rounded-lg text-sm font-semibold px-3 py-1 w-fit'>{snippet.language}</span>
+                           <span className='bg-blue-500/10 text-blue-400 rounded-lg text-sm capitalize font-semibold px-3 py-1 w-fit'>{snippet.language}</span>
                            <span className='flex-center gap-1 text-xs text-gray-500'><Clock className='size-4 text-white' strokeWidth={3}/>{new Date(snippet.createdAt).toLocaleDateString()}</span>
                       </div>
                   </div>
@@ -52,13 +57,13 @@ export default function SnippetCard({snippet} : {snippet: Snippet}) {
 
                        <StarButton snippetId={snippet.id}/>
 
-                       {snippet.userId == user?.id && (
+                       {snippet.userId == user?.id && (pathname.includes('/snippets') || pathname.includes('/profile')) && (
                             <button disabled={isPending} onClick={async (e) => {
                               e.preventDefault()
                               e.stopPropagation()
                               await deleteSnippet(snippet.id)
-                              queryClient.refetchQueries({ queryKey: ['getSnippets']})
-                              queryClient.refetchQueries({ queryKey: ['getStarredSnippets']})
+                              // queryClient.refetchQueries({ queryKey: ['getSnippets']})
+                              // queryClient.refetchQueries({ queryKey: ['getStarredSnippets']})
                             }}
                             className='disabled:bg-red-500/20 disabled:text-red-400 disabled:cursor-not-allowed bg-gray-500/10 text-gray-400 hover:bg-red-500/10 hover:text-red-400 px-3 py-1.5 rounded-lg duration-200 transition-all'>
                             {isPending ? (

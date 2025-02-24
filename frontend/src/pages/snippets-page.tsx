@@ -7,16 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import SnippetCard from "@/components/SnippetCard";
 import { Skeleton } from "@/components/ui/skeleton";
-
-type Snippet = {
-    id: string;
-    createdAt: Date;
-    title: string;
-    language: string;
-    code: string;
-    userId: number;
-  }
-  
+import { Snippet } from '../lib/utils'
 
 export default function SnippetsPage() {
 
@@ -28,9 +19,9 @@ export default function SnippetsPage() {
         queryKey: ['getSnippets'],
         queryFn: async () => {
             try {
-                const { data: { snippets }} = await axios.get('/api/snippet/getSnippets', { withCredentials: true})
-                // throw new Error('error')
                 // await new Promise(r => setTimeout(r, 8000))
+                // throw new Error('error')
+                const { data: { snippets }} = await axios.get('/api/snippet/getSnippets', { withCredentials: true})
                 return snippets
             } catch(err) {
                  console.error(err)
@@ -120,7 +111,7 @@ export default function SnippetsPage() {
                  </div>
              </section>
 
-             <motion.div layout id="snippets" 
+             <motion.div layout id="snippets" transition={{duration: 0.5, ease: 'easeInOut'}}
               className={twMerge("grid gap-4 p-2 min-h-44", view === 'grid' ? 'grid-cols-3 w-3/4' : 'grid-cols-1 w-1/2')}>
               <AnimatePresence mode="popLayout">
                 {isFetching ? (

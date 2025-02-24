@@ -93,7 +93,7 @@ export default function CreateRoomButton() {
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
        <DialogTrigger>
            <button className='flex items-center gap-2 px-3 py-1.5 opacity-75 hover:opacity-100 duration-200 rounded-lg bg-gradient-to-br from-blue-500 via-blue-600 to-blue-800'>
-                <Users className='size-5 animate-bounce'/> Create a Room
+                <Users className='size-5'/> Create a Room
            </button>
        </DialogTrigger>
        <DialogContent>
