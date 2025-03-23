@@ -20,7 +20,7 @@ export default function Navbar() {
 
   const isSnippetPage = pathname.includes('/snippet/')
 
-  if(pathname === '/' || pathname.includes('/room' || pathname.includes('/desktop-only'))) return null
+  if(pathname === '/' || pathname.includes('/room') || pathname.includes('/desktop-only')) return null
 
   return <nav className="fixed inset-x-0 top-0 flex gap-3 items-center justify-between backdrop-blur-md z-40 p-4 bg-[#0a0a0f]/80 border-b border-gray-600">
        <div className='flex items-center gap-3'>

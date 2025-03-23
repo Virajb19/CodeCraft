@@ -4,6 +4,8 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
+const isProduction = import.meta.env.VITE_ENV === 'production'
+
 export default tseslint.config(
   { ignores: ['dist'] },
   {

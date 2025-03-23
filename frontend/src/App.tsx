@@ -43,7 +43,8 @@ export default function App() {
           {/* {!pathname.includes('/room') && <BackgroundBeams className='-z-50'/>} */}
           <GridPattern />
 
-          {pathname !== '/desktop-only' && <Navbar />}
+          {/* {pathname !== '/desktop-only' && <Navbar />} */}
+          <Navbar />
 
           <Routes>
               <Route path='/' element={<HomePage />}/>

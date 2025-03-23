@@ -45,6 +45,9 @@ app.use((0, express_session_1.default)({
 }));
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
+app.get('/', (req, res) => {
+    res.send('Server is running');
+});
 app.use('/api/auth/', auth_routes_1.authRouter);
 app.use('/api/user/', user_routes_1.userRouter);
 app.use('/api/codeExecution', auth_middleware_1.isAuthenticated, code_execution_routes_1.executionRouter);
