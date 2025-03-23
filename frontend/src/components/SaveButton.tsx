@@ -25,12 +25,12 @@ export default function SaveButton() {
 
     const {mutateAsync: createSnippet} = useMutation({
      mutationFn: async (data: { title: string, language: string, code: string}) => {
-        // await new Promise(r => setTimeout(r, 5000))
+         //  await new Promise(r => setTimeout(r, 5000))
           const res = await axios.post('/api/snippet/create', data, { withCredentials: true}) 
-          setOpen(false)
           return res.data
      },
      onSuccess: () => {
+        setOpen(false)
         toast.success('Saved successfully', { position: 'top-center'})
      },
      onError: (err) => {
@@ -62,7 +62,7 @@ export default function SaveButton() {
        </DialogTrigger>
        <DialogContent>
             <DialogHeader>
-                 <DialogTitle className="text-xl">Save Snippet</DialogTitle>
+                 <DialogTitle className="text-xl uppercase">Save Snippet</DialogTitle>
             </DialogHeader>
                 <Form {...form}>
                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

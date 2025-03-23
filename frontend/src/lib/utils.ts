@@ -2,23 +2,24 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import axios from 'axios'
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export const BACKEND_URL = "http://localhost:3000"
 
-export const CHECKOUT_URL = "https://viraj.lemonsqueezy.com/buy/5dd8c3fd-7f6d-4044-a789-55ecd6c45b6c"
-
-export default axios.create({baseURL: BACKEND_URL})
+export default axios.create({baseURL: SERVER_URL})
 
 export const ACTIONS = {
-  JOIN: "join",
-  JOINED: "joined",
-  DISCONNECTED: "disconnected",
-  CODE_CHANGE: "code-change",
-  SYNC_CODE: "sync-code",
-  LEAVE: "leave",
+  CONNECT: "connect", // When a user connects to the socket
+  DISCONNECT: "disconnect", // When a user disconnects
+
+  JOIN_ROOM: "join:room", // When a user joins a specific room
+  LEAVE_ROOM: "leave:room", // When a user leaves a specific room
+  DELETE_ROOM: "delete:room", // When a room is deleted
+
 }
 
 export type Execution = {

@@ -43,7 +43,7 @@ export default function Snippet() {
       return null
     }
 
-  return <div className="w-full min-h-screen">
+  return <div className="w-full min-h-screen pt-24">
   <div className="w-3/4 mx-auto flex flex-col gap-4 p-3">
         <SnippetCard snippet={snippet}/>
          <div className="flex flex-col rounded-t-2xl border border-[#ffffff0a] bg-[#121218]">

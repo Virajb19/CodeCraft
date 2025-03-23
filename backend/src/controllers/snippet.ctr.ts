@@ -73,7 +73,7 @@ export async function deleteSnippet(req: Request, res: Response) {
 
         const { id } = req.params
 
-        const snippet = await db.snippet.findUnique({where: {id}})
+        const snippet = await db.snippet.findUnique({where: {id}, select: {id: true, userId: true}})
         if(!snippet) {
             res.status(404).json({msg: 'Snippet not found'})
             return

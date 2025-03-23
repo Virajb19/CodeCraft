@@ -15,8 +15,9 @@ export default function ProButton() {
         //    toast.success(url)
            window.location.href = url
         },
-        onError: () => {
-            toast.error('Something went wrong!!!')
+        onError: (err) => {
+            console.error(err)
+            // toast.error('Something went wrong!!!')
         }
     })
 
@@ -31,7 +32,7 @@ export default function ProButton() {
                     <span className="text-amber-400/90 hover:text-amber-600 font-semibold">Pro</span>
                 </button>
          </TooltipTrigger>
-         <TooltipContent sideOffset={12}>
+         <TooltipContent sideOffset={12} className="border-[3px] border-blue-600">
              <p className="text-lg px-2">Unlock all languages</p>
          </TooltipContent>
      </Tooltip>

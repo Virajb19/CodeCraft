@@ -10,7 +10,6 @@ export default function EditorPage() {
         window.open('http://localhost:3000/api/auth/github', "_self")
       }} className="absolute top-1/2 left-1/2 z-50 rounded-sm p-3 bg-red-900">Sign up</button> */}
       {/* <Link to={'/room'} className="absolute top-1/2 left-1/2 z-50 rounded-sm p-3 bg-red-900">Join</Link> */}
-      <Navbar />
       <div className="mt-24 w-full p-3 flex items-center gap-2">
          <EditorPanel />
          <OutputPanel />

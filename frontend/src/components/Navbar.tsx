@@ -3,17 +3,24 @@ import { Select, SelectContent, SelectValue, SelectItem, SelectTrigger } from '.
 import { useCodeEditorStore } from '@/lib/store';
 import ThemeSelector from './ThemeSelector';
 import RunButton from './run-button';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import UserAccountNav from './UserAccountNav';
 import CreateRoomButton from './CreateRoomButton';
 import ProButton from './ProButton';
 import { useAuth } from '@/lib/useAuth';
 import LanguageSelector from './LanguageSelector';
+import ShareSnippet from './ShareSnippet';
 
 export default function Navbar() {
 
   const { user } = useAuth()
   const isPro = user?.isPro
+
+  const { pathname } = useLocation()
+
+  const isSnippetPage = pathname.includes('/snippet/')
+
+  if(pathname === '/' || pathname.includes('/room' || pathname.includes('/desktop-only'))) return null
 
   return <nav className="fixed inset-x-0 top-0 flex gap-3 items-center justify-between backdrop-blur-md z-40 p-4 bg-[#0a0a0f]/80 border-b border-gray-600">
        <div className='flex items-center gap-3'>
@@ -49,11 +56,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <CreateRoomButton />
+          {/* <CreateRoomButton /> */}
       </div>
           
           <div className='flex items-center gap-2'>
-          <ThemeSelector />
             {/* <Select onValueChange={val => setLanguage(val)}>
                     <SelectTrigger className='w-[200px] outline-none'>
                         <SelectValue placeholder='Select a language'/>
@@ -66,7 +72,15 @@ export default function Navbar() {
                     })}
                     </SelectContent>
                 </Select> */}
-                <LanguageSelector />
+               {pathname.includes('/editor') && (
+                    <div className='flex items-center gap-2'>
+                    <ThemeSelector />
+                     <LanguageSelector />
+                  </div>
+               )}
+               {isSnippetPage && (
+                 <ShareSnippet />
+               )}
                 {!isPro && <ProButton />}
                <div className='w-[2px] h-12 bg-gray-700 mx-2'/>
               <UserAccountNav />

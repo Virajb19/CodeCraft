@@ -13,7 +13,7 @@ export default function InviteUserButton({roomId}: {roomId: string}) {
 
   return <Dialog open={open} onOpenChange={val => setOpen(val)}>
       <DialogTrigger>
-            <button className="bg-green-600 w-full font-semibold py-1 rounded-xl text-lg">
+            <button className="bg-green-700 hover:bg-green-600 duration-300 w-full font-semibold py-1 rounded-lg text-lg">
                     Invite a user
         </button>
       </DialogTrigger>

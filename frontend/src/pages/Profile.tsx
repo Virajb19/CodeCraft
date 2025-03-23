@@ -53,7 +53,7 @@ export default function Profile() {
     const [activeTab,setActiveTab] = useState<'executions' | 'starred'>('executions')
 
     // Give activeTab as queryKey
-    const {data: executionsData, isLoading: loadingExecutions} = useQuery<{executions: Execution[], executionsInLast24hrs: number}>({queryKey: ['getExecutions'], queryFn: fetchExecutions})
+    const {data: executionsData, isLoading: loadingExecutions, isError} = useQuery<{executions: Execution[], executionsInLast24hrs: number}>({queryKey: ['getExecutions'], queryFn: fetchExecutions})
     const {data: starredSnippets, isLoading: loadingSnippets} = useQuery<Snippet[]>({queryKey: ['getStarredSnippets'], queryFn: fetchStarredSnippets})
 
     // const executionsInLast24hrs = useMemo(() => {
@@ -104,7 +104,7 @@ export default function Profile() {
     // </div>
     
 
-  return <div className="w-full flex flex-col items-center min-h-screen py-8 px-4">
+  return <div className="w-full flex flex-col items-center min-h-screen py-24 px-4">
          <ProfileHeader userStats={userStats}/> 
 
          <div id="content" className="flex flex-col min-h-[50vh] p-4 gap-1 mt-5 w-4/5 bg-gradient-to-br from-[#12121a] to-[#1a1a2e] rounded-2xl shadow-2xl shadow-black/50 border border-gray-800/50 backdrop-blur-xl">
@@ -116,7 +116,7 @@ export default function Profile() {
                          <span className="font-semibold text-sm">{tab.label}</span>
 
                          {activeTab === tab.id && (
-                           <motion.div layoutId="activeTab" transition={{type: 'spring', bounce: 0.2, duration: 0.6}}
+                           <motion.div layoutId="activeTab" transition={{type: 'spring', bounce: 0.4, duration: 0.6}}
                             className="absolute inset-0 bg-blue-500/10 rounded-lg -z-10" />
                          )}
                     </button>

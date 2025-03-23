@@ -2,9 +2,42 @@ import { create } from 'zustand'
 import { editor } from 'monaco-editor';
 import { LANGUAGE_CONFIG } from '@/constants';
 import axios from 'axios';
-import type { Socket } from "socket.io-client";
-import { io } from 'socket.io-client'
-import { BACKEND_URL } from './utils'
+import { io, Socket } from 'socket.io-client';
+
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
+
+type SocketState = {
+  socket: Socket | null
+  roomId: string | null
+  connectSocket: (chatId: string) => void
+  disconnectSocket: () => void
+}
+
+export const useSocketStore = create<SocketState>((set,get) => ({
+  socket: null,
+  roomId: null,
+  connectSocket: (roomId: string) => {
+     const existingSocket = get().socket
+
+     if(existingSocket && get().roomId === roomId) return
+     if(existingSocket) existingSocket.disconnect()
+
+      const newSocket = io(SERVER_URL, {
+         reconnectionAttempts: 10,
+         autoConnect: false,
+         auth: { roomId },
+       })
+
+       newSocket.connect()
+
+       set({socket: newSocket, roomId})
+  },
+  disconnectSocket: () => {
+     const { socket } = get()
+     socket?.disconnect()
+     set({socket: null, roomId: null})
+  }
+}))
 
 type selectedLang = {
     selectedLang: string,
@@ -35,29 +68,6 @@ type CodeEditorState = {
     setLanguage: (language: string) => void
     runCode: () => Promise<void>;
   }
-
-type SocketStoreState = {
-  socket: Socket | null,
-  initSocket: () => void
-  connectSocket: () => void,
-  disconnectSocket: () => void
-}
-
-export const useSocketStore = create<SocketStoreState>((set, get) => ({
-     socket: null,
-     initSocket: () => {
-        const socket = io(BACKEND_URL, {
-          forceNew: true,
-          reconnectionAttempts: Infinity,
-          timeout: 10000,
-          transports: ['websocket']
-        })
-
-        set({socket})
-     },
-     connectSocket: () => {},
-     disconnectSocket: () => {}
-}))
 
 export const useLangStore = create<selectedLang>((set) => ({
     selectedLang: localStorage.getItem('lang') || 'Javascript',

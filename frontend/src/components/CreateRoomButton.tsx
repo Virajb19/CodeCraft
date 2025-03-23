@@ -12,6 +12,8 @@ import axios from '../lib/utils'
 import { toast } from 'sonner';
 import { Loader } from 'lucide-react'
 import { AxiosError } from 'axios';
+import { useSocketStore } from '@/lib/store';
+import { useSocket } from '@/hooks/useSocket';
   
 const createRoomSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
@@ -25,6 +27,9 @@ type createRoomInput = z.infer<typeof createRoomSchema>
 type joinRoomInput = z.infer<typeof joinRoomSchema>
 
 export default function CreateRoomButton() {
+
+    // use socket from useSocket() why ???
+    const { socket } = useSocketStore()
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -79,6 +84,7 @@ export default function CreateRoomButton() {
          onSuccess: () => {
             toast.success('Joined room')
             navigate(`/room/${data.roomId}`)
+            socket?.emit('join:room', )
          },
          onError: (err) => {
             console.error(err)
@@ -117,7 +123,7 @@ export default function CreateRoomButton() {
                           )}
                         />
                        
-                       <button disabled={createForm.formState.isSubmitting} className='px-3 py-1 flex-center gap-2 w-full rounded-lg bg-blue-600 disabled:cursor-not-allowed disabled:opacity-75' type='submit'>
+                       <button disabled={createForm.formState.isSubmitting} className='px-3 py-1 flex-center gap-2 w-full rounded-lg bg-blue-600 hover:bg-blue-500 duration-200 disabled:cursor-not-allowed disabled:opacity-75' type='submit'>
                         {createForm.formState.isSubmitting ? <>
                            <Loader className='size-5 animate-spin'/> Creating...
                         </> : 'Create'}
@@ -148,7 +154,7 @@ export default function CreateRoomButton() {
                           )}
                         />
 
-                        <button disabled={joinForm.formState.isSubmitting} className='px-3 py-1 w-full flex-center gap-2 rounded-lg bg-blue-600 text-lg disabled:cursor-not-allowed disabled:opacity-75' type='submit'>
+                        <button disabled={joinForm.formState.isSubmitting} className='px-3 py-1 w-full flex-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-500 duration-200 text-lg disabled:cursor-not-allowed disabled:opacity-75' type='submit'>
                               {createForm.formState.isSubmitting ? <>
                                  <Loader className='size-5 animate-spin'/> Joining...
                               </> : 'Join'}

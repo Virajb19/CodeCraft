@@ -1,7 +1,5 @@
-import { initSocket } from "@/lib/socket"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import type { Socket } from "socket.io-client";
 import { toast } from "sonner";
 import { Room } from '../lib/utils'
 import axios from '../lib/utils'
@@ -12,16 +10,19 @@ import InviteUserButton from "@/components/InviteUserButton";
 import { useAuth } from "@/lib/useAuth";
 import { Loader2 } from 'lucide-react'
 import CollaborativeCodeEditor from "@/components/CollaborativeCodeEditor";
+import { useSocket } from "@/hooks/useSocket";
 
 const colors = ['red', 'blue', 'green', 'orange', 'purple'];
 const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
 export default function RoomPage() {
-
+  
     const navigate = useNavigate()
     const { id } = useParams()
 
-    const { user } = useAuth()
+     const socket = useSocket(id ?? '')
+
+     const { user } = useAuth()
 
     // const [count,setCount] = useState(0)
 
@@ -59,12 +60,7 @@ export default function RoomPage() {
     const owner = room?.owner
     const participants = room?.participants
 
-    // participants?.unshift(owner)
-
     // if(isLoading) return <p>Loading...</p>
-
-    // const socketRef = useRef<Socket | null>(null) 
-    const [socket, setSocket] = useState<Socket | null>(null)
 
     // useEffect(() => {
     //   if(!room || !user) return
@@ -79,46 +75,6 @@ export default function RoomPage() {
     //   }
 
     // }, [room, user])
-
-   // useEffect(() => {
-
-    //    const init = async () => {
-    //        socketRef.current = await initSocket()
-    //        setSocket(socketRef.current)
-    //        socketRef.current.on("connect_error", (err) => handleErrors(err));
-    //        socketRef.current.on("connect_failed", (err) => handleErrors(err));
-
-    //         const handleErrors = (err: Error) => {
-    //             console.log("Error", err)
-    //             toast.error("Socket connection failed, Try again later");
-    //             navigate("/editor");
-    //         }
-    //        socketRef.current.emit('join', {roomId: room?.id, username: user?.name, userId: user?.id})
-
-    //        socketRef.current.on('joined', ({username, userId}) => {
-    //            if(userId !== user?.id) {
-    //              toast.info(`${username} joined the room`, { position: 'top-center', duration: 5000, closeButton: true,})
-    //              queryClient.refetchQueries({ queryKey: ['getRoom']})
-    //            } 
-    //        })
-
-    //        socketRef.current.on('disconnected', ({username, userId}) => {
-    //          if(userId !== user?.id) {
-    //            toast.info(`${username} left the room`)
-    //            queryClient.refetchQueries({ queryKey: ['getRoom']})
-    //          }
-    //        })
-    //    } 
-    //    init()
-
-    //    return () => {
-    //      if(socketRef.current) {
-    //       socketRef.current.disconnect()
-    //       socketRef.current.off('joined')
-    //       socketRef.current.off('disconnected')
-    //       }
-    //    }
-    // }, [])
 
     const listRef = useRef<HTMLUListElement | null>(null)
 
@@ -190,7 +146,7 @@ export default function RoomPage() {
               <button onClick={async () => {
                 await leaveRoom(room?.id ?? '')
                 // queryClient.refetchQueries({ queryKey: ['getRoom']}) This will run only for the client where button is clicked 
-              }} disabled={isPending} className="bg-red-600 flex-center gap-3 mt-2 font-semibold py-1 rounded-xl text-lg disabled:cursor-not-allowed disabled:opacity-70">
+              }} disabled={isPending} className="bg-red-700 hover:bg-red-600 duration-300 flex-center gap-3 mt-2 font-semibold py-1 rounded-xl text-lg disabled:cursor-not-allowed disabled:opacity-70">
                    {isPending ? <>
                       <Loader2 className="size-5 animate-spin"/> Leaving...
                    </> : 'Leave the room'}

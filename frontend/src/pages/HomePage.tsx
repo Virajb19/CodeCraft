@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight} from 'lucide-react'
 import { FcGoogle } from "react-icons/fc";
 import { BACKEND_URL } from '../lib/utils'
+import { signIn } from '@/lib/auth-client';
 
 export default function HomePage() {
 
@@ -31,6 +32,14 @@ export default function HomePage() {
                                        <FaGithub className='size-7'/>
                                        Login with Github
                                </Link>
+
+                               {/* <button onClick={async () => {
+                                await signIn.social({provider: 'github', callbackURL: '/'})
+                               }} className='w-full flex-center gap-3 p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
+						                   focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg text-lg'>
+                                       <FaGithub className='size-7'/>
+                                       Login with Github
+                               </button> */}
 
                                     <button onClick={() => {
                                         window.open(`${BACKEND_URL}/api/auth/google/callback`, "_self")

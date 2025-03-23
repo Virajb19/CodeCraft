@@ -7,16 +7,17 @@
 }
 
 .input-style {
-  @apply outline-none px-4 py-2 bg-transparent placeholder:text-sm rounded-xl border focus:ring-2 focus:ring-blue-600 focus:border-transparent duration-200
+  @apply px-4 py-2 dark:bg-black bg-transparent placeholder:font-semibold placeholder:text-lg rounded-sm focus:outline-none border focus:border-transparent focus:ring-[2.5px] focus:ring-blue-600 duration-100
 }
 
+
 @font-face {
-  font-family: sans;
-  src: url(/DMSans_24pt-Bold.ttf);
+  font-family: grotesk;
+  src: url(/SpaceGrotesk-Medium.ttf);
 }
 
 body {
-  font-family: sans;
+  font-family: grotesk;
 }
 
 @layer base {

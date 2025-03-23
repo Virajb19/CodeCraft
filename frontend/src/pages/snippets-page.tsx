@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { BookOpen, Tag, X, Search, Grid, Layers } from "lucide-react";
 import { useLocalStorage } from 'usehooks-ts'
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SnippetCard from "@/components/SnippetCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Snippet } from '../lib/utils'
@@ -35,14 +35,16 @@ export default function SnippetsPage() {
 
     const languages = [...new Set(snippets?.map(snippet => snippet.language).slice(0,5))]
 
-    const filteredSnippets = snippets?.filter(snippet => {
-        const matchesSearch = snippet.title.toLowerCase().includes(searchQuery) || snippet.language.toLowerCase().includes(searchQuery) 
-        const matchesLang = selectedLang != null ? snippet.language === languages[selectedLang] : true
+    const filteredSnippets = useMemo(() => {
+       return snippets?.filter(snippet => {
+            const matchesSearch = snippet.title.toLowerCase().includes(searchQuery) || snippet.language.toLowerCase().includes(searchQuery) 
+            const matchesLang = selectedLang != null ? snippet.language === languages[selectedLang] : true
+    
+            return matchesSearch && matchesLang
+        })
+    }, [searchQuery,snippets,selectedLang,languages])
 
-        return matchesSearch && matchesLang
-    })
-
-  return <div className="w-full min-h-screen bg-[#0a0a0f] flex flex-col items-center p-2 gap-5">
+  return <div className="w-full min-h-screen bg-[#0a0a0f] flex flex-col items-center pt-24 gap-5">
              <div className="flex flex-col items-center gap-7 mt-5">
                 <motion.span  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{duration: 0.3, ease: 'easeInOut'}}
                  className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full text-gray-400 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
@@ -114,7 +116,7 @@ export default function SnippetsPage() {
              <motion.div layout id="snippets" transition={{duration: 0.5, ease: 'easeInOut'}}
               className={twMerge("grid gap-4 p-2 min-h-44", view === 'grid' ? 'grid-cols-3 w-3/4' : 'grid-cols-1 w-1/2')}>
               <AnimatePresence mode="popLayout">
-                {isFetching ? (
+                {isFetching || !filteredSnippets ? (
                     <>
                      {Array.from({ length: 6}).map((_,i) => {
                         return <Skeleton key={i} className="h-52"/>

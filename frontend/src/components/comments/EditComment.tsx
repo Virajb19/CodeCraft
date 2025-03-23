@@ -52,7 +52,7 @@ export default function EditComment({ comment, snippetId } : { comment: Comment,
 
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
-        <button className="opacity-40 hover:opacity-100 p-2 rounded-lg hover:bg-blue-600/15 duration-300">
+        <button className="opacity-40 hover:opacity-100 p-2 rounded-lg hover:bg-blue-600/15 hover:text-blue-500 duration-300">
                   <Edit />  
         </button>
       </DialogTrigger>
@@ -74,7 +74,7 @@ export default function EditComment({ comment, snippetId } : { comment: Comment,
                    }}
                   />
 
-                  <button disabled={form.formState.isSubmitting || form.watch('newContent') === ''} className='px-3 py-2 text-lg bg-[#3b82f6] hover:bg-[#2563eb] duration-200 rounded-xl flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-70'>
+                  <button disabled={form.formState.isSubmitting || form.watch('newContent') === ''} className='px-3 py-2 text-lg bg-[#3b82f6] hover:bg-[#2563eb] duration-200 uppercase rounded-xl flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-70'>
                     {editComment.isPending ? (
                        <>
                          <Loader2 className='animate-spin'/> Editing...

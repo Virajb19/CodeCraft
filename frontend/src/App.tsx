@@ -14,6 +14,9 @@ import RoomPage from './pages/RoomPage';
 import { Loader } from 'lucide-react';
 import { useMediaQuery } from 'usehooks-ts'
 import DesktopOnly from './pages/DesktopOnly';
+import Navbar from './components/Navbar';
+import GridPattern from './components/GridPattern';
+import { useEffect } from 'react';
 
 export default function App() {
 
@@ -24,9 +27,12 @@ export default function App() {
     const isSmallScreen = useMediaQuery('(max-width: 1280px)')
     const navigate = useNavigate()
 
-    if(isSmallScreen) navigate('/desktop-only')
+    useEffect(() => {
+        if(isSmallScreen) navigate('/desktop-only')
+    }, [isSmallScreen, pathname,navigate])
 
-    if(isLoading && pathname != '/') return <div className='w-full min-h-screen flex-center'>
+
+    if(isLoading && pathname != '/') return <div className='w-full min-h-screen flex-center bg-black'>
        <Loader className='size-20 animate-spin text-blue-600'/>
     </div>
 
@@ -34,7 +40,10 @@ export default function App() {
       <div className='w-full min-h-screen'>
           <Toaster richColors position='bottom-right' theme='dark'/>
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
-          {!pathname.includes('/room') && <BackgroundBeams className='-z-50'/>}
+          {/* {!pathname.includes('/room') && <BackgroundBeams className='-z-50'/>} */}
+          <GridPattern />
+
+          {pathname !== '/desktop-only' && <Navbar />}
 
           <Routes>
               <Route path='/' element={<HomePage />}/>

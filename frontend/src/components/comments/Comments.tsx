@@ -102,7 +102,9 @@ export default function Comments({snippetId, snippetUserId}: {snippetId: string,
                   // toast.success(picture)
 
                    return <motion.div initial={{y: -4, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{ease: 'backOut', delay: 0.05 * i}}
-                       key={comment.id} className="relative group flex flex-col gap-2 p-4 rounded-lg bg-[#0a0a0f] border border-[#ffffff0a] hover:border-gray-700 duration-200 transition-all">
+                       key={comment.id} className={twMerge("relative group flex flex-col gap-2 p-4 rounded-lg bg-[#0a0a0f] border border-[#ffffff0a] duration-200 transition-all", 
+                        user?.id === comment.userId && 'hover:border-gray-700'
+                       )}>
                         <div className="flex gap-2">
                           {picture ? (
                             <img src={picture} width={40} height={40} className="object-contain rounded-full"/>

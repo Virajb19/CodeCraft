@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { motion } from 'framer-motion'
 
 type Props = {
     code: string,
@@ -14,7 +15,7 @@ export default function CodeBlock({code, language}: Props) {
     const lines = code.split('\n')
     const displayCode = isExpanded ? code : lines.slice(0,6).join('\n')
 
-  return <div className="relative">
+  return <motion.div layout transition={{duration: 0.4, ease: 'easeInOut'}} className="relative border-4">
         {/* {JSON.stringify({code, language})} */}
         <SyntaxHighlighter
         language={language.toLowerCase()}
@@ -42,5 +43,5 @@ export default function CodeBlock({code, language}: Props) {
                   )}
          </button>
        )}
-  </div>
+  </motion.div>
 }

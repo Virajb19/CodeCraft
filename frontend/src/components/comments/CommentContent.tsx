@@ -1,4 +1,4 @@
-import CodeBlock from "./CodeBlock"
+import CodeBlock from "../CodeBlock"
 
 export default function CommentContent({content}: {content: string}) {
 

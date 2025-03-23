@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 
 export default function StarButton({snippetId} : {snippetId: string}) {
 
-  // USE LOCAL STORAGE OR SEE CONVEX/SNIPPETS.TS fire a query
   // const [isStarred, setIsStarred] = useLocalStorage(`isStarred-${snippetId}`,false)
   // const [starCount, setStarCount] = useState(0)
 
@@ -38,6 +37,7 @@ export default function StarButton({snippetId} : {snippetId: string}) {
     }
   })
 
+  // USE OPTIMISTIC UPDATE
   const {mutateAsync: starSnippet, isPending} = useMutation<{isStarred: boolean, starCount: number}>({
     mutationKey: ['star', snippetId],
     mutationFn: async () => {
@@ -52,17 +52,19 @@ export default function StarButton({snippetId} : {snippetId: string}) {
     //  setIsStarred(prev => !prev)
     //  setStarCount(prev => isStarred ? prev - 1 : prev + 1)
     // },
-    onSuccess: async ({ isStarred }) => {
+    onSuccess: ({ isStarred }) => {
       //  setIsStarred(isStarred)
       //  setStarCount(starCount)
       toast.success(isStarred ? 'Starred' : 'Removed star', { icon: isStarred && <Star className='fill-yellow-500 text-yellow-500 size-5'/>})
-      await queryClient.refetchQueries({queryKey: ['isStarred']})
-      await queryClient.refetchQueries({queryKey: ['getStarCount']})
     },
     onError: (err) => {
       console.error(err)
       // setIsStarred(prev => !prev)
       // setStarCount(prev => isStarred ? prev + 1 : prev - 1)
+    },
+    onSettled: async () => {
+      await queryClient.refetchQueries({queryKey: ['isStarred']})
+      await queryClient.refetchQueries({queryKey: ['getStarCount']})
     }
   })
 
