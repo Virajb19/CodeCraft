@@ -3,11 +3,16 @@ import axios from '../lib/utils'
 import { Star } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 import { toast } from 'sonner'
+import { useLocation } from 'react-router-dom'
 
 export default function StarButton({snippetId} : {snippetId: string}) {
 
+    // USE OPTIMISTIC UPDATE
+
   // const [isStarred, setIsStarred] = useLocalStorage(`isStarred-${snippetId}`,false)
   // const [starCount, setStarCount] = useState(0)
+
+  const { pathname } = useLocation()
 
   const queryClient = useQueryClient()
 
@@ -65,6 +70,10 @@ export default function StarButton({snippetId} : {snippetId: string}) {
     onSettled: async () => {
       await queryClient.refetchQueries({queryKey: ['isStarred']})
       await queryClient.refetchQueries({queryKey: ['getStarCount']})
+      // If you add this check you will see outdated/cached data try starring a snippet on snippets page and go to profile on adding this check
+      // if(pathname === '/profile') {
+        queryClient.refetchQueries({queryKey: ['getStarredSnippets']})
+      // }
     }
   })
 

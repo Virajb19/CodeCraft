@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.snippetRouter = void 0;
+const express_1 = require("express");
+const snippet_ctr_1 = require("../controllers/snippet.ctr");
+exports.snippetRouter = (0, express_1.Router)();
+exports.snippetRouter.post('/create', snippet_ctr_1.createSnippet);
+exports.snippetRouter.get('/getSnippets', snippet_ctr_1.getSnippets);
+exports.snippetRouter.get('/getSnippet/:id', snippet_ctr_1.getSnippet);
+exports.snippetRouter.delete('/delete/:id', snippet_ctr_1.deleteSnippet);
+exports.snippetRouter.post('/star/:id', snippet_ctr_1.starSnippet);
+exports.snippetRouter.get('/star/:id', snippet_ctr_1.getStarCount);
+exports.snippetRouter.get('/getStarredSnippets', snippet_ctr_1.getStarredSnippets);
+exports.snippetRouter.get('/isStarred/:id', snippet_ctr_1.isStarred);
+exports.snippetRouter.get('/get/comments/:id', snippet_ctr_1.getComments);
