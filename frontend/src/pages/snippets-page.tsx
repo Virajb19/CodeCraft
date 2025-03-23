@@ -44,7 +44,7 @@ export default function SnippetsPage() {
         })
     }, [searchQuery,snippets,selectedLang,languages])
 
-  return <div className="w-full min-h-screen bg-[#0a0a0f] flex flex-col items-center pt-24 gap-5">
+  return <div className="w-full min-h-screen flex flex-col items-center pt-24 gap-5">
              <div className="flex flex-col items-center gap-7 mt-5">
                 <motion.span  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{duration: 0.3, ease: 'easeInOut'}}
                  className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full text-gray-400 bg-gradient-to-r from-blue-500/10 to-purple-500/10">

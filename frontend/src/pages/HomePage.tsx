@@ -5,8 +5,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from 'react-router-dom';
 import { ArrowRight} from 'lucide-react'
 import { FcGoogle } from "react-icons/fc";
-import { BACKEND_URL } from '../lib/utils'
 import { signIn } from '@/lib/auth-client';
+
+const BACKEND_URL = import.meta.env.VITE_SERVER_URL
 
 export default function HomePage() {
 

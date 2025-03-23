@@ -37,7 +37,7 @@ export default function App() {
     </div>
 
   return (
-      <div className='w-full min-h-screen'>
+      <div className='w-full min-h-screen bg-gradient-to-r from-blue-500/10 to-purple-500/10'>
           <Toaster richColors position='bottom-right' theme='dark'/>
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
           {/* {!pathname.includes('/room') && <BackgroundBeams className='-z-50'/>} */}
