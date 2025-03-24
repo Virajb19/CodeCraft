@@ -56,7 +56,7 @@ app.use((0, express_session_1.default)({
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
         maxAge: 1000 * 60 * 60 * 24 * 3,
     }
 }));

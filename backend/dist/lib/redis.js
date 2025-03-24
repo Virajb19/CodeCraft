@@ -6,7 +6,9 @@ if (process.env.NODE_ENV === 'production') {
     exports.redis = new ioredis_1.Redis({
         host: process.env.UPSTASH_REDIS_URL,
         password: process.env.UPSTASH_REDIS_PASSWORD,
-        tls: {}
+        tls: {},
+        connectTimeout: 10000,
+        keepAlive: 1000
     });
 }
 else {
