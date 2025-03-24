@@ -5,7 +5,7 @@ import { ShareIcon } from 'lucide-react'
 import { useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCodeEditorStore } from "@/lib/store";
 import axios from '../lib/utils';
 import { toast } from "sonner";
@@ -17,6 +17,8 @@ export default function SaveButton() {
 
     const [open, setOpen] = useState(false)
     const { language, getCode } = useCodeEditorStore()
+
+    const queryClient = useQueryClient()
 
     const form = useForm<Input>({
         resolver: zodResolver(z.object({ title: z.string().min(1, { message: 'Please enter a title'}).max(15)})),
@@ -36,7 +38,10 @@ export default function SaveButton() {
      onError: (err) => {
           console.error(err)
           toast.error('Failed to save code. Try again !!!', { position: 'top-center'})
-     } 
+     },
+     onSettled: () => {
+        queryClient.refetchQueries({queryKey: ['getSnippets']})
+     }
     }) 
 
     useEffect(() => {

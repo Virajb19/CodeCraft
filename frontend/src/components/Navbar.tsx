@@ -10,11 +10,14 @@ import ProButton from './ProButton';
 import { useAuth } from '@/lib/useAuth';
 import LanguageSelector from './LanguageSelector';
 import ShareSnippet from './ShareSnippet';
+import { toast } from 'sonner';
 
 export default function Navbar() {
 
   const { user } = useAuth()
   const isPro = user?.isPro
+
+  // toast.success(JSON.stringify(user))
 
   const { pathname } = useLocation()
 

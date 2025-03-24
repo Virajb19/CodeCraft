@@ -5,7 +5,7 @@ type User = { id: number, email: string, name: string, image: string | null, isP
 
 export const useAuth = () => {
 
-    const {data: user,isLoading} = useQuery<User>({
+    const {data: user,isLoading, isFetching} = useQuery<User>({
         queryKey: ['getUser'],
         queryFn: async () => {
             try {

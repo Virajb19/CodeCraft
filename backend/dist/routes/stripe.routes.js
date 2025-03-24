@@ -18,6 +18,7 @@ const stripe_1 = __importDefault(require("stripe"));
 const db_1 = __importDefault(require("../lib/db"));
 const auth_middleware_1 = require("../middleware/auth.middleware");
 exports.stripeRouter = (0, express_1.Router)();
+const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' });
 exports.stripeRouter.post('/create-checkout-session', auth_middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -26,7 +27,6 @@ exports.stripeRouter.post('/create-checkout-session', auth_middleware_1.isAuthen
             res.status(401).json({ msg: 'Not authorized' });
             return;
         }
-        const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' });
         const session = yield stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -55,13 +55,14 @@ exports.stripeRouter.post('/create-checkout-session', auth_middleware_1.isAuthen
         res.status(500).json({ msg: 'Internal server error' });
     }
 }));
-exports.stripeRouter.post('/webhook/stripe', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.stripeRouter.post('/webhook', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log('In stripe webhook');
         const body = req.body;
         const signature = req.headers['stripe-signature'];
-        const stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' });
         let event;
         try {
+            // This line throws error without raw body parsing Dont JSON parse in this route
             event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET);
         }
         catch (err) {
@@ -69,15 +70,12 @@ exports.stripeRouter.post('/webhook/stripe', (req, res) => __awaiter(void 0, voi
             return;
         }
         const session = event.data.object;
-        const userId = Number(session.client_reference_id);
-        console.log('In stripe webhook', userId);
-        // There is a bug 
-        //  if(event.type === 'checkout.session.completed') {
-        // const userId = Number(session.client_reference_id)
-        //     console.log(userId)
-        //     await db.user.update({where: { id: userId}, data: { isPro: true}})
-        // }
-        yield db_1.default.user.update({ where: { id: userId }, data: { isPro: true } });
+        //  console.log('In stripe webhook')
+        if (event.type === 'checkout.session.completed') {
+            const userId = Number(session.client_reference_id);
+            yield db_1.default.user.update({ where: { id: userId }, data: { isPro: true } });
+            console.log(`User ${userId} upgraded to Pro successfully`);
+        }
         res.status(200).json({ msg: 'Payment successfull' });
     }
     catch (err) {

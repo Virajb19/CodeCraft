@@ -1,5 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import passport from "passport";
+import { isAuthenticated } from "../middleware/auth.middleware";
+import db from '../lib/db'
 
 export const authRouter = Router()
 
@@ -31,16 +33,48 @@ authRouter.get('/google/callback', passport.authenticate('google', {
     failureRedirect: process.env.CLIENT_BASE_URL as string
 }))
 
-authRouter.get('/check',(req: Request, res: Response) => {
-    if (req.isAuthenticated()) {
-		res.send({ user: req.user });
-	} else {
-		res.send({ user: null });
-	}
+authRouter.get('/check', async (req: Request, res: Response) => {
+    if(!req.isAuthenticated()) {
+        res.json({user: null})
+        return
+    }
+    // console.log(req.isAuthenticated())
+
+    const userId = req.user?.id
+
+    if(!userId) {
+        res.json({user: null})
+        return
+    }
+
+    try {
+       const user = await db.user.findUnique({where: {id: userId}, select: {id: true, email: true, username: true ,ProfilePicture: true, isPro: true}})
+       if(!user) {
+        res.json({ user: null });
+        return
+       }
+
+       const formattedUser = {
+        id: user.id,
+        email: user.email,
+        name: user.username,
+        image: user.ProfilePicture, 
+        isPro: user.isPro
+    };
+
+       res.json({user: formattedUser})
+    } catch(err) {
+       console.error('Error fetching user',err)
+       res.status(500).json({ error: "Failed to fetch user data" })
+    }
 })
 
-authRouter.get('/logout', (req: Request, res: Response) => {
+authRouter.delete('/logout', isAuthenticated ,(req: Request, res: Response) => {
     req.session.destroy((err) => {
-		res.json({ message: "Logged out" })
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.status(500).json({ error: "Failed to log out" });
+        }
+		res.status(200).json({ message: "Logged out" })
 	})
 })

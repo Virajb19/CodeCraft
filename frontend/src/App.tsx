@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import EditorPage from './pages/editor-page'
 import NextTopLoader from 'nextjs-toploader';
-import { Toaster } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import SnippetsPage from './pages/snippets-page';
 import Snippet from './pages/Snippet';
 import HomePage from './pages/HomePage';
@@ -22,6 +22,8 @@ export default function App() {
 
     const { user, isLoading } = useAuth()
     const isAuth = !!user
+
+    // toast.success(isAuth ? 'Auth' : 'Not')
 
     const { pathname } = useLocation()
     const isSmallScreen = useMediaQuery('(max-width: 1280px)')

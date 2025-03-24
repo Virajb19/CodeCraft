@@ -10,11 +10,30 @@ import axios from '../lib/utils';
 import { Code, LogOut, User, User2 } from 'lucide-react';
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "@radix-ui/react-avatar";
+import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function UserAccountNav() {
 
  const { user, isLoading } = useAuth()
  const navigate = useNavigate()
+
+ const queryClient = useQueryClient()
+
+ const logout = useMutation({
+    mutationFn: async () => {
+        const res = await axios.delete('/api/auth/logout', { withCredentials: true})
+        return res.data
+    },
+    onSuccess: () => {
+        toast.success('Logged out')
+        navigate('/')
+    },
+    onError: (err) => {
+       console.error(err)
+    },
+    onSettled: () => queryClient.refetchQueries({queryKey: ['getUser']})
+ })
 
   return <main>
              <DropdownMenu modal={false}>
@@ -51,9 +70,8 @@ export default function UserAccountNav() {
 
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem className='outline-none cursor-pointer p-0' onClick={async () => {
-                         await axios.get('/api/auth/logout', { withCredentials: true})
-                         navigate('/')
+                    <DropdownMenuItem disabled={logout.isPending} className='outline-none cursor-pointer p-0' onClick={() => {
+                        logout.mutate()
                     }}>
                        <span className='flex items-center gap-2 text-base p-1.5 w-full transition-all duration-300 hover:text-red-500'><LogOut className='size-4'/> Log out</span>
                        </DropdownMenuItem>
