@@ -33,8 +33,8 @@ export default function HomePage() {
                                        <FaGithub className='size-7'/>
                                        Login with Github
                                </Link>
-
-                               {/* <button onClick={async () => {
+{/* 
+                               <button onClick={async () => {
                                 await signIn.social({provider: 'github', callbackURL: '/'})
                                }} className='w-full flex-center gap-3 p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
 						                   focus:outline-none focus:ring-[#24292F]/50 font-semibold rounded-lg text-lg'>

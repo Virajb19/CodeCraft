@@ -14,8 +14,9 @@ export default function CodeBlock({code, language}: Props) {
     const [isExpanded, setIsExpanded] = useState(false)
     const lines = code.split('\n')
     const displayCode = isExpanded ? code : lines.slice(0,6).join('\n')
-
-  return <motion.div layout transition={{duration: 0.4, ease: 'easeInOut'}} className="relative border-4">
+    
+    // layout transition={{duration: 0.4, type: 'spring', bounce: 0.2}} 
+  return <motion.div className="relative border-4">
         {/* {JSON.stringify({code, language})} */}
         <SyntaxHighlighter
         language={language.toLowerCase()}

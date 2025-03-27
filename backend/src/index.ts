@@ -7,6 +7,7 @@ import cors from 'cors'
 import { userRouter } from './routes/user.routes';
 import session from 'express-session';
 import cookieSession from 'cookie-session'
+import { toNodeHandler } from "better-auth/node";
 import passport from 'passport'
 import { isAuthenticated } from './middleware/auth.middleware';
 import { authRouter } from './routes/auth.routes';
@@ -20,6 +21,8 @@ import { stripeRouter } from './routes/stripe.routes';
 import { setUpSocketServer } from './lib/socket';
 import {RedisStore} from "connect-redis"
 import { redis } from './lib/redis';
+import path from 'path'
+import { auth } from './lib/auth'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -62,8 +65,8 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24 * 3,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   }
 })) 
 
@@ -79,6 +82,12 @@ app.use('/api/user/', userRouter)
 app.use('/api/codeExecution', isAuthenticated, executionRouter)
 app.use('/api/snippet', isAuthenticated, snippetRouter)
 app.use('/api/stripe', stripeRouter)
+
+// app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../../frontend", "dist", "index.html"));
+// });
 
 server.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);

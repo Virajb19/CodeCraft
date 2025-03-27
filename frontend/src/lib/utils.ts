@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import axios from 'axios'
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const BACKEND_URL = "http://localhost:3000"
 
-export default axios.create({baseURL: SERVER_URL})
+export default axios.create({baseURL: SERVER_URL, withCredentials: true})
 
 export const ACTIONS = {
   CONNECT: "connect", // When a user connects to the socket
