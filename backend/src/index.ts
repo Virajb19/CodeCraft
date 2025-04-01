@@ -8,6 +8,7 @@ import { userRouter } from './routes/user.routes';
 import session from 'express-session';
 import cookieSession from 'cookie-session'
 import { toNodeHandler } from "better-auth/node";
+import cookieParser from 'cookie-parser'
 import passport from 'passport'
 import { isAuthenticated } from './middleware/auth.middleware';
 import { authRouter } from './routes/auth.routes';
@@ -42,7 +43,7 @@ setUpSocketServer(io)
 // app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use(cors({
-  origin: process.env.CLIENT_BASE_URL ,
+  origin: process.env.CLIENT_BASE_URL! ,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }))
@@ -66,7 +67,7 @@ app.use(session({
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 15,
   }
 })) 
 

@@ -40,7 +40,7 @@ authRouter.get('/check', async (req: Request, res: Response) => {
     }
     // console.log(req.isAuthenticated())
 
-    const userId = req.user?.id
+    const userId = req.user.id
 
     if(!userId) {
         res.json({user: null})

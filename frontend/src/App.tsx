@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import EditorPage from './pages/editor-page'
 import NextTopLoader from 'nextjs-toploader';
-import { toast, Toaster } from 'sonner'
+import { Toaster } from 'sonner'
 import SnippetsPage from './pages/snippets-page';
 import Snippet from './pages/Snippet';
 import HomePage from './pages/HomePage';
@@ -9,7 +9,6 @@ import './index.css'
 import { useAuth } from './lib/useAuth';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
-import { BackgroundBeams } from './components/ui/background-beams';
 import RoomPage from './pages/RoomPage';
 import { Loader } from 'lucide-react';
 import { useMediaQuery } from 'usehooks-ts'
@@ -17,6 +16,8 @@ import DesktopOnly from './pages/DesktopOnly';
 import Navbar from './components/Navbar';
 import GridPattern from './components/GridPattern';
 import { useEffect } from 'react';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
 
 export default function App() {
 
@@ -39,7 +40,7 @@ export default function App() {
     </div>
 
   return (
-      <div className='w-full min-h-screen bg-gradient-to-r from-blue-500/10 to-purple-500/10'>
+      <div className='w-full min-h-screen bg-gradient-to-r from-blue-500/20 to-purple-500/20'>
           <Toaster richColors position='bottom-right' theme='dark'/>
           <NextTopLoader height={5} color="#38bdf8" showSpinner={false} easing="ease"/>
           {/* {!pathname.includes('/room') && <BackgroundBeams className='-z-50'/>} */}
@@ -50,6 +51,8 @@ export default function App() {
 
           <Routes>
               <Route path='/' element={<HomePage />}/>
+              <Route path='/signup' element={!isAuth ? <SignUp /> : <Navigate to={'/editor'}/>}/>
+              <Route path='/signin' element={!isAuth ? <SignIn /> : <Navigate to={'/editor'}/>}/>
               <Route path='/editor' element={isAuth ? <EditorPage /> : <Navigate to={'/'}/>} />
               <Route path='/snippets' element={isAuth ? <SnippetsPage /> : <Navigate to={'/'}/>}/>
               <Route path='/snippet/:id' element={isAuth ? <Snippet /> : <Navigate to={'/'}/>}/>

@@ -9,6 +9,7 @@ export const useAuth = () => {
         queryKey: ['getUser'],
         queryFn: async () => {
             try {
+                // /api/auth/check
                const { data: {user}} = await axios.get('/api/auth/check', {withCredentials: true})
                return user
             } catch(err) {

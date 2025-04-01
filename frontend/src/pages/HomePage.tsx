@@ -3,11 +3,10 @@ import { FaGithub } from "react-icons/fa";
 import { useAuth } from '@/lib/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from 'react-router-dom';
-import { ArrowRight} from 'lucide-react'
+import { ArrowLeft, ArrowRight} from 'lucide-react'
 import { FcGoogle } from "react-icons/fc";
-import { signIn } from '@/lib/auth-client';
 
-const BACKEND_URL = import.meta.env.VITE_SERVER_URL
+const BACKEND_URL = import.meta.env.VITE_SERVER_URL as string
 
 export default function HomePage() {
 
@@ -33,7 +32,7 @@ export default function HomePage() {
                                        <FaGithub className='size-7'/>
                                        Login with Github
                                </Link>
-{/* 
+                            {/* 
                                <button onClick={async () => {
                                 await signIn.social({provider: 'github', callbackURL: '/'})
                                }} className='w-full flex-center gap-3 p-4 bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 
@@ -48,6 +47,10 @@ export default function HomePage() {
                                        <FcGoogle className='size-7'/>
                                           Login with Google
                                     </button>
+
+                                    <Link to={'/signin'} className='flex-center gap-3 group text-lg mt-3 text-blue-400 '>
+                                       <ArrowLeft className='group-hover:-translate-x-1 duration-300'/> Signin using Email
+                                    </Link>
                                </div>
                              )
                      )}
