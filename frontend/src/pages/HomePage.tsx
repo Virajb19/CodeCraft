@@ -47,10 +47,10 @@ export default function HomePage() {
                                        <FcGoogle className='size-7'/>
                                           Login with Google
                                     </button>
-
+                                  {/* 
                                     <Link to={'/signin'} className='flex-center gap-3 group text-lg mt-3 text-blue-400 '>
                                        <ArrowLeft className='group-hover:-translate-x-1 duration-300'/> Signin using Email
-                                    </Link>
+                                    </Link> */}
                                </div>
                              )
                      )}

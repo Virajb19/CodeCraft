@@ -108,7 +108,6 @@ export default function SignUp() {
                          {form.formState.isSubmitting && <Loader className='animate-spin'/>} {form.formState.isSubmitting ? 'Please wait...' : 'Sign up'}
                         </motion.button>
 
-                        <DemarcationLine />
                         <div className='flex mb:flex-col items-center gap-1'>
                           </div>
 

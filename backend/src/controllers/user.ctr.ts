@@ -7,7 +7,6 @@ import jwt from 'jsonwebtoken'
 
  export async function getProfile(req: Request, res: Response) {
      try {
-      console.log(req.user)
          // if(!req.user) {
          //    res.json({user: null})
          //    return
@@ -93,7 +92,6 @@ export async function signin(req: Request, res: Response) {
       await db.user.update({where: {id: user.id}, data: {lastLogin: new Date()}})
 
       const token = jwt.sign({ userId: user.id }, process.env.SESSION_SECRET || 'secret', { expiresIn: '7d' })
-      console.log(token)
       res.cookie('token', token, {
          httpOnly: true,
          secure: process.env.NODE_ENV === 'production',

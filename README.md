@@ -24,7 +24,7 @@ cd frontend && npm install && npm run dev
 ```bash
 npm install && npm run dev 
 ```
-Create .env and add env vars (Refer .env.example)
+Create .env and add env vars (Refer .env.example in backend folder)
 
 **4. Start Database**
 

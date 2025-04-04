@@ -28,17 +28,17 @@ import { auth } from './lib/auth'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const server = http.createServer(app)
-const io = new Server(server, {
-  cors: {
-    origin: process.env.CLIENT_BASE_URL,
-    methods: ['GET', 'POST'],
-    credentials: true
-  },
-  // adapter: createAdapter(redis)
-}) 
+// const server = http.createServer(app)
+// const io = new Server(server, {
+//   cors: {
+//     origin: process.env.CLIENT_BASE_URL,
+//     methods: ['GET', 'POST'],
+//     credentials: true
+//   },
+//   // adapter: createAdapter(redis)
+// }) 
 
-setUpSocketServer(io)
+// setUpSocketServer(io)
           
 // app.all("/api/auth/*", toNodeHandler(auth));
 
@@ -57,6 +57,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 
 app.use(express.json({ limit: '100mb'}))
+app.use(cookieParser())
 
 app.use(session({
   store: new RedisStore({client: redis}),
@@ -90,6 +91,6 @@ app.use('/api/stripe', stripeRouter)
 //   res.sendFile(path.join(__dirname, "../../frontend", "dist", "index.html"));
 // });
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
